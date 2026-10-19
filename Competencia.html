@@ -1,0 +1,846 @@
+<!doctype html>
+<html lang="es">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>VetaCap · Análisis competitivo Retail</title>
+<style>
+:root {
+  --brand: #1f9d3a;
+  --brand-strong: #157a2c;
+  --brand-soft: #e8f6ec;
+  --brand-line: #b9e3c4;
+  --fg: #16191d;
+  --fg-2: #4b5560;
+  --fg-3: #7a838d;
+  --bg: #f4f5f7;
+  --panel: #ffffff;
+  --line: #e4e7eb;
+  --line-2: #eef0f3;
+  --muted-bar: #c7cdd4;
+  --muted-bar-2: #e3e7eb;
+  --ok: #157a2c;
+  --bad: #c0392b;
+  --bad-soft: #fbecea;
+  --warn: #9a6700;
+  --radius: 12px;
+  --shadow: 0 1px 2px rgba(16,24,40,.04), 0 1px 3px rgba(16,24,40,.06);
+  --sans: "Inter", -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+  --serif: Georgia, "Times New Roman", serif;
+}
+@media (prefers-color-scheme: dark) {
+  :root {
+    --brand: #3cc65a; --brand-strong: #5bd875; --brand-soft: #14281a; --brand-line: #24502f;
+    --fg: #e8eaed; --fg-2: #b3bac2; --fg-3: #8a939c; --bg: #0f1214; --panel: #171b1f;
+    --line: #2a3036; --line-2: #22272c; --muted-bar: #4a535c; --muted-bar-2: #2f363c;
+    --ok: #5bd875; --bad: #f07b6e; --bad-soft: #2c1a18; --warn: #e3b341;
+    --shadow: none;
+  }
+}
+* { box-sizing: border-box; }
+html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
+body { font-size: 15px; line-height: 1.5; }
+.wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px 64px; }
+.topbar { border-bottom: 1px solid var(--line); background: var(--panel); }
+.topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; padding-bottom: 14px; gap: 12px; }
+.logo { font-weight: 800; letter-spacing: .06em; font-size: 18px; color: var(--brand); }
+.logo span { color: var(--fg); }
+.topbar-meta { font-size: 13px; color: var(--fg-3); text-align: right; }
+.hero { padding: 36px 0 8px; }
+.kicker { font-size: 12px; font-weight: 700; letter-spacing: .1em; text-transform: uppercase; color: var(--brand); margin: 0 0 8px; }
+h1 { font-family: var(--serif); font-weight: 400; font-size: clamp(28px, 4vw, 40px); line-height: 1.15; margin: 0 0 14px; letter-spacing: -.01em; }
+.lead { font-size: 17px; color: var(--fg-2); max-width: 820px; margin: 0; }
+.summary { margin: 22px 0 0; padding: 0; list-style: none; display: grid; gap: 10px; max-width: 900px; }
+.summary li { display: grid; grid-template-columns: 22px 1fr; gap: 10px; align-items: start; color: var(--fg); }
+.summary .n { width: 22px; height: 22px; border-radius: 50%; background: var(--brand-soft); color: var(--brand-strong); font-size: 12px; font-weight: 700; display: flex; align-items: center; justify-content: center; margin-top: 1px; }
+.summary b { font-weight: 650; }
+section { margin-top: 44px; }
+.sec-head { display: flex; align-items: baseline; justify-content: space-between; gap: 16px; flex-wrap: wrap; margin-bottom: 14px; }
+h2 { font-size: 22px; font-weight: 650; margin: 0; letter-spacing: -.01em; }
+.sec-sub { color: var(--fg-3); font-size: 14px; margin: 4px 0 0; max-width: 760px; }
+.card { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 22px; }
+.tiles { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); gap: 14px; margin-top: 28px; }
+.tile { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 20px; display: flex; flex-direction: column; gap: 6px; }
+.tile .lbl { font-size: 13px; color: var(--fg-3); }
+.tile .val { font-family: var(--serif); font-size: 38px; line-height: 1.05; font-variant-numeric: tabular-nums; }
+.tile .val.brand { color: var(--brand-strong); }
+.tile .sub { font-size: 13px; color: var(--fg-2); }
+
+/* Ranking de aranceles */
+.rank { display: flex; flex-direction: column; }
+.rank-head, .rank-row { display: grid; grid-template-columns: minmax(130px, 190px) 1fr minmax(170px, 260px); gap: 18px; align-items: center; }
+.rank-head { font-size: 12px; text-transform: uppercase; letter-spacing: .06em; color: var(--fg-3); padding: 0 12px 10px; border-bottom: 1px solid var(--line); }
+.rank-row { padding: 12px; border-bottom: 1px solid var(--line-2); border-radius: 8px; }
+.rank-row:last-child { border-bottom: none; }
+.rank-row.me { background: var(--brand-soft); border-bottom-color: transparent; }
+.rank-name { font-weight: 600; display: flex; flex-direction: column; gap: 2px; }
+.rank-name small { font-weight: 400; color: var(--fg-3); font-size: 12px; }
+.rank-row.me .rank-name { color: var(--brand-strong); }
+.bars { display: flex; flex-direction: column; gap: 6px; min-width: 0; }
+.bar-line { display: flex; align-items: center; gap: 10px; min-width: 0; }
+.bar { height: 14px; border-radius: 7px; background: var(--muted-bar); min-width: 3px; flex: 0 0 auto; }
+.bar.std { background: var(--muted-bar); }
+.rank-row.me .bar.std { background: var(--brand); }
+.bar.best { height: 8px; background: var(--muted-bar-2); border: 1px dashed var(--muted-bar); }
+.rank-row.me .bar.best { background: var(--brand-line); border-color: var(--brand); }
+.bar.trunc { background: linear-gradient(90deg, var(--muted-bar) 85%, transparent); }
+.bar-val { font-variant-numeric: tabular-nums; font-weight: 650; font-size: 15px; white-space: nowrap; }
+.bar-val.small { font-weight: 500; font-size: 13px; color: var(--fg-2); }
+.rank-best { font-size: 13px; color: var(--fg-2); }
+.rank-best b { color: var(--fg); font-variant-numeric: tabular-nums; }
+.axis { display: grid; grid-template-columns: minmax(130px, 190px) 1fr minmax(170px, 260px); gap: 18px; padding: 8px 12px 0; }
+.axis-scale { position: relative; height: 18px; font-size: 11px; color: var(--fg-3); }
+.axis-scale span { position: absolute; transform: translateX(-50%); }
+.legend { display: flex; flex-wrap: wrap; gap: 18px; font-size: 13px; color: var(--fg-2); margin-bottom: 14px; }
+.legend i { display: inline-block; width: 22px; vertical-align: middle; margin-right: 6px; border-radius: 6px; }
+.legend .l-std { height: 12px; background: var(--muted-bar); }
+.legend .l-best { height: 8px; background: var(--muted-bar-2); border: 1px dashed var(--muted-bar); }
+.legend .l-me { height: 12px; background: var(--brand); }
+
+/* Simulador */
+.sim-controls { display: flex; flex-wrap: wrap; align-items: center; gap: 14px 22px; margin-bottom: 18px; }
+.sim-vol { display: flex; flex-direction: column; gap: 2px; }
+.sim-vol .lbl { font-size: 12px; color: var(--fg-3); text-transform: uppercase; letter-spacing: .06em; }
+.sim-vol .v { font-family: var(--serif); font-size: 34px; line-height: 1; font-variant-numeric: tabular-nums; }
+.steps { display: flex; flex-wrap: wrap; gap: 6px; }
+.steps button { font: inherit; font-size: 13px; padding: 6px 11px; border-radius: 999px; border: 1px solid var(--line); background: var(--panel); color: var(--fg-2); cursor: pointer; font-variant-numeric: tabular-nums; }
+.steps button:hover { border-color: var(--brand); color: var(--fg); }
+.steps button[aria-pressed="true"] { background: var(--brand); border-color: var(--brand); color: #fff; font-weight: 600; }
+.sim-takeaway { background: var(--bg); border-radius: 10px; padding: 12px 14px; font-size: 14px; color: var(--fg); margin-bottom: 16px; }
+.sim-row { display: grid; grid-template-columns: minmax(150px, 230px) 1fr; gap: 16px; align-items: center; padding: 7px 0; border-bottom: 1px solid var(--line-2); }
+.sim-row:last-child { border-bottom: none; }
+.sim-name { display: flex; flex-direction: column; font-weight: 600; font-size: 14px; }
+.sim-name small { font-weight: 400; color: var(--fg-3); font-size: 12px; }
+.sim-row.me .sim-name { color: var(--brand-strong); }
+.sim-row.me .bar { background: var(--brand); }
+.sim-row .bar { height: 16px; border-radius: 8px; }
+
+/* Planes */
+.plans { display: grid; grid-template-columns: repeat(auto-fit, minmax(230px, 1fr)); gap: 14px; }
+.plan { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px; display: flex; flex-direction: column; gap: 10px; }
+.plan.me { border-color: var(--brand-line); box-shadow: 0 0 0 1px var(--brand-line) inset, var(--shadow); }
+.plan-top { display: flex; justify-content: space-between; align-items: center; gap: 8px; }
+.plan-broker { font-size: 12px; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--fg-3); }
+.plan.me .plan-broker { color: var(--brand-strong); }
+.pill { font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 999px; background: var(--bg); color: var(--fg-2); white-space: nowrap; }
+.plan.me .pill { background: var(--brand-soft); color: var(--brand-strong); }
+.plan-name { font-size: 17px; font-weight: 650; margin: 0; }
+.plan-price { font-family: var(--serif); font-size: 28px; line-height: 1.1; font-variant-numeric: tabular-nums; }
+.plan-price small { font-family: var(--sans); font-size: 13px; color: var(--fg-3); }
+.plan-conv { font-size: 12px; color: var(--fg-3); margin-top: -4px; }
+.plan ul { margin: 0; padding: 0; list-style: none; display: flex; flex-direction: column; gap: 6px; font-size: 13px; color: var(--fg-2); }
+.plan li { display: grid; grid-template-columns: 14px 1fr; gap: 6px; }
+.plan li::before { content: "•"; color: var(--fg-3); }
+.plan.me li::before { color: var(--brand); }
+
+/* Matriz */
+.matrix-wrap { overflow: auto; max-height: 78vh; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); box-shadow: var(--shadow); }
+table.matrix { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1500px; font-size: 13px; }
+.matrix th, .matrix td { padding: 10px 12px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
+.matrix thead th { position: sticky; top: 0; z-index: 3; background: var(--panel); font-size: 14px; font-weight: 650; border-bottom: 1px solid var(--line); min-width: 150px; }
+.matrix thead th.me { background: var(--brand-soft); color: var(--brand-strong); }
+.matrix th.dim, .matrix td.dim { position: sticky; left: 0; z-index: 2; background: var(--panel); min-width: 170px; max-width: 190px; font-weight: 600; color: var(--fg-2); border-right: 1px solid var(--line); }
+.matrix thead th.dim { z-index: 4; }
+.matrix td.me { background: var(--brand-soft); color: var(--fg); font-weight: 500; }
+.matrix tr.group td { background: var(--bg); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-3); padding: 8px 12px; position: sticky; left: 0; }
+.matrix tr.group td span { position: sticky; left: 12px; }
+.matrix .na { color: var(--fg-3); font-style: italic; }
+.matrix a { color: var(--brand-strong); }
+
+
+/* Funcionalidades */
+table.feat { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1350px; font-size: 13px; }
+.feat th, .feat td { padding: 10px 12px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
+.feat thead th { position: sticky; top: 0; z-index: 3; background: var(--panel); font-size: 14px; font-weight: 650; border-bottom: 1px solid var(--line); min-width: 120px; }
+.feat thead th.me { background: var(--brand-soft); color: var(--brand-strong); }
+.feat th.dim, .feat td.dim { position: sticky; left: 0; z-index: 2; background: var(--panel); min-width: 190px; max-width: 210px; border-right: 1px solid var(--line); }
+.feat thead th.dim { z-index: 4; }
+.feat td.dim b { display: block; font-weight: 650; color: var(--fg); }
+.feat td.dim span { color: var(--fg-3); font-size: 12px; }
+.feat td.me { background: var(--brand-soft); }
+.st { display: inline-flex; align-items: center; gap: 6px; font-weight: 650; font-size: 12px; white-space: nowrap; }
+.st::before { content: ""; width: 9px; height: 9px; border-radius: 50%; display: inline-block; }
+.st.si { color: var(--ok); } .st.si::before { background: var(--ok); }
+.st.parcial { color: var(--warn); } .st.parcial::before { background: linear-gradient(90deg, var(--warn) 50%, transparent 50%); border: 1px solid var(--warn); width: 8px; height: 8px; }
+.st.no { color: var(--fg-3); } .st.no::before { background: transparent; border: 1px solid var(--fg-3); width: 8px; height: 8px; }
+.st.conf { color: var(--brand-strong); } .st.conf::before { background: transparent; border: 1px dashed var(--brand-strong); width: 8px; height: 8px; }
+.feat .det { display: block; color: var(--fg-2); font-size: 12px; margin-top: 3px; line-height: 1.4; }
+.feat-legend { display: flex; flex-wrap: wrap; gap: 16px; margin-bottom: 12px; font-size: 13px; color: var(--fg-2); }
+.callouts { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 14px; margin-top: 16px; }
+.callout { background: var(--panel); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); padding: 18px 20px; }
+.callout h3 { margin: 0 0 4px; font-size: 15px; font-weight: 650; }
+.callout .cs { margin: 0 0 10px; font-size: 13px; color: var(--fg-3); }
+.callout ul { margin: 0; padding-left: 18px; font-size: 14px; color: var(--fg-2); display: flex; flex-direction: column; gap: 6px; }
+.callout.op { border-color: var(--brand-line); }
+.callout.op h3 { color: var(--brand-strong); }
+
+/* Veredicto */
+.verdict { display: grid; grid-template-columns: repeat(auto-fit, minmax(320px, 1fr)); gap: 16px; }
+.v-col h3 { margin: 0 0 12px; font-size: 13px; text-transform: uppercase; letter-spacing: .08em; display: flex; align-items: center; gap: 8px; }
+.v-col.gana h3 { color: var(--ok); }
+.v-col.pierde h3 { color: var(--bad); }
+.v-col h3::before { content: ""; width: 8px; height: 8px; border-radius: 50%; background: currentColor; }
+.v-item { border-left: 3px solid var(--line); padding: 2px 0 2px 14px; margin-bottom: 16px; }
+.v-col.gana .v-item { border-left-color: var(--brand); }
+.v-col.pierde .v-item { border-left-color: var(--bad); }
+.v-item h4 { margin: 0 0 4px; font-size: 15px; font-weight: 650; }
+.v-item p { margin: 0; font-size: 14px; color: var(--fg-2); }
+.v-item .vs { font-size: 12px; color: var(--fg-3); margin-top: 4px; }
+
+/* Fuentes */
+.sources { font-size: 13px; color: var(--fg-2); }
+.sources h3 { font-size: 14px; margin: 0 0 8px; color: var(--fg); }
+.sources ul { margin: 0 0 16px; padding-left: 18px; columns: 2 320px; column-gap: 32px; }
+.sources li { margin-bottom: 4px; break-inside: avoid; }
+.sources a { color: var(--brand-strong); }
+.sources p { margin: 0 0 8px; }
+
+@media (max-width: 720px) {
+  .rank-head { display: none; }
+  .rank-row { grid-template-columns: 1fr; gap: 8px; }
+  .axis { display: none; }
+  .sim-row { grid-template-columns: 1fr; gap: 6px; }
+  .wrap { padding: 0 14px 48px; }
+  .card { padding: 16px; }
+}
+@media print {
+  body { background: #fff; }
+  .card, .tile, .plan { box-shadow: none; break-inside: avoid; }
+  .matrix-wrap { max-height: none; overflow: visible; }
+  section { break-inside: avoid-page; }
+}
+</style>
+</head>
+<body>
+
+<div class="topbar">
+  <div class="wrap">
+    <div class="logo">VETA<span>CAP</span></div>
+    <div class="topbar-meta">Análisis competitivo · Retail<br>Relevamiento al 19 de octubre de 2026</div>
+  </div>
+</div>
+
+<div class="wrap">
+  <header class="hero">
+    <p class="kicker">Comparativa de aranceles, planes y servicios</p>
+    <h1>VetaCap frente a la competencia retail</h1>
+    <p class="lead">Ocho brokers comparados con VetaCap en lo que más pesa para el inversor autogestionado: cuánto cobra cada uno, qué incluyen sus planes, cuánto apalancamiento dan y con qué plataformas operan.</p>
+    <ul class="summary" id="summary"></ul>
+  </header>
+
+  <div class="tiles" id="tiles"></div>
+
+  <section id="aranceles">
+    <div class="sec-head">
+      <div>
+        <h2>Arancel en acciones y CEDEARs</h2>
+        <p class="sec-sub">Lo que cobra cada broker por operación en su cuenta online estándar y en su mejor tramo o plan. Sin IVA ni derechos de mercado.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="legend">
+        <span><i class="l-me"></i>VetaCap</span>
+        <span><i class="l-std"></i>Cuenta estándar</span>
+        <span><i class="l-best"></i>Mejor tramo o plan</span>
+      </div>
+      <div class="rank" id="rank"></div>
+      <div class="axis"><div></div><div class="axis-scale" id="axis"></div><div></div></div>
+    </div>
+  </section>
+
+  <section id="simulador">
+    <div class="sec-head">
+      <div>
+        <h2>Cuánto paga un cliente por mes</h2>
+        <p class="sec-sub">Costo mensual en aranceles según el volumen operado en acciones y CEDEARs, con la opción más barata de cada broker para ese volumen. Elegí un volumen.</p>
+      </div>
+    </div>
+    <div class="card">
+      <div class="sim-controls">
+        <div class="sim-vol"><span class="lbl">Volumen mensual</span><span class="v" id="sim-v">—</span></div>
+        <div class="steps" id="steps" role="group" aria-label="Volumen mensual"></div>
+      </div>
+      <div class="sim-takeaway" id="sim-take"></div>
+      <div id="sim"></div>
+    </div>
+  </section>
+
+  <section id="planes">
+    <div class="sec-head">
+      <div>
+        <h2>Planes de abono fijo</h2>
+        <p class="sec-sub">Solo tres de los nueve brokers venden un abono mensual en lugar de cobrar por operación. Los precios en dólares se convierten al MEP de cierre del 19/10/2026.</p>
+      </div>
+    </div>
+    <div class="plans" id="plans"></div>
+  </section>
+
+  <section id="matriz">
+    <div class="sec-head">
+      <div>
+        <h2>Comparativa completa</h2>
+        <p class="sec-sub">Todas las dimensiones relevadas, broker por broker. Desplazá hacia la derecha para ver el resto.</p>
+      </div>
+    </div>
+    <div class="matrix-wrap"><table class="matrix" id="matrix"></table></div>
+  </section>
+
+
+  <section id="funcionalidades">
+    <div class="sec-head">
+      <div>
+        <h2>Funcionalidades de plataforma</h2>
+        <p class="sec-sub">Lo que cada broker documenta públicamente (tarifario, centro de ayuda, preguntas frecuentes y ficha de su app). "No figura" significa que no aparece en ese material, no que el broker no lo tenga.</p>
+      </div>
+    </div>
+    <div class="feat-legend">
+      <span class="st si">Sí</span><span class="st parcial">Parcial</span><span class="st no">No figura</span><span class="st conf">A confirmar (VetaCap)</span>
+    </div>
+    <div class="matrix-wrap"><table class="feat" id="feat"></table></div>
+    <div class="callouts">
+      <div class="callout">
+        <h3>Ya hay precios atados a la custodia</h3>
+        <p class="cs">Precedentes para un FLAT que dependa de lo que el cliente tiene en VetaCap, no solo de lo que opera.</p>
+        <ul id="custodia"></ul>
+      </div>
+      <div class="callout op">
+        <h3>Lo que ningún competidor publica</h3>
+        <p class="cs">No aparece en el material público de los ocho. Espacio para diferenciarse.</p>
+        <ul id="oportunidades"></ul>
+      </div>
+    </div>
+  </section>
+
+  <section id="veredicto">
+    <div class="sec-head">
+      <div>
+        <h2>Dónde gana y dónde pierde VetaCap</h2>
+        <p class="sec-sub">Lectura del relevamiento: fortalezas para sostener y brechas para cerrar.</p>
+      </div>
+    </div>
+    <div class="card verdict" id="verdict"></div>
+  </section>
+
+  <section id="fuentes">
+    <div class="card sources">
+      <h3>Fuentes</h3>
+      <ul id="src"></ul>
+      <h3>Metodología</h3>
+      <p>Aranceles de la cuenta online para personas humanas, sin IVA ni derechos de mercado. Donde el broker publica topes ("hasta"), se toma el tope. VetaCap y Bolsa de Comercio del Chaco publican su tabla como imagen; se transcribió de esas tablas oficiales.</p>
+      <p>El costo mensual supone un volumen parejo de mes a mes (los tramos de IOL y Bull Market se calculan con el volumen del mes anterior), sin bonificaciones intradía y con el MEP de cierre del 19/10/2026 ($1.544,1) para los planes en dólares. El Club de los Millones de Eco ($30M por semana en al menos 3 días) se aproxima a $130M por mes. Los tramos de IOL no aplican a clientes referenciados por agentes productores (hasta 1%). El precio de Cocos Pro es un mínimo ("desde USD 150").</p>
+      <p>Las comisiones pueden cambiar sin aviso; conviene confirmar cada valor antes de usarlo con clientes.</p>
+    </div>
+  </section>
+</div>
+
+<script>
+const MEP = 1544.1;
+
+const BROKERS = [
+  {
+    id: 'veta', nombre: 'VetaCap', me: true,
+    tipo: 'ALyC · Veta Capital S.A.',
+    escala: 'Unos 730 clientes con FLAT (dato interno)',
+    modelo: 'Cuenta web con arancel bajo o abono fijo (VetaFLAT)',
+    abono: 'FLAT PRO $85.000 · ADVANCE $160.000 · ELITE $285.000 (+ IVA por mes)',
+    acc_std: 0.15, acc_best: 0, acc_best_txt: '0% con FLAT (abono fijo)',
+    acciones: 'Web 0,15% · 0% con FLAT · con asesor 1%',
+    bonos: 'Web 0,15% · 0% con FLAT',
+    opciones: 'Web 0,15% · 0% con FLAT · ejercicio 0,15% (ELITE 50% OFF)',
+    futuros: 'Web 0,05% · 0% con FLAT',
+    intradia: 'Sin arancel en la punta menor (todas las cuentas)',
+    cau_col: 'Pesos: web 1,5% TNA · FLAT 0,75% · ELITE 0% · USD 0,25% TNA',
+    cau_tom: 'Pesos 3% TNA (con asesor 4,8%) · USD 1% TNA · ELITE 50% OFF',
+    apalanc: 'Saldos y bonos de aire: 175%, 250% y 400% de la valorizada (topes $100M, $200M y $1.000M)',
+    plataformas: 'Virtual Broker (AUNE), Matriz DMA, Docta Terminal, OptionsDesk (ELITE)',
+    api: '10.000 órdenes/mes bonificadas; bots con homologación previa',
+    usa: 'Acciones del exterior solo con asesor (1,5%)', usa_auto: false,
+    atencion: 'Asesor personal por WhatsApp, grupo privado, Discord con research',
+    fuente: 'Tarifario oficial y vetacap.com.ar/personas'
+  },
+  {
+    id: 'iol', nombre: 'IOL', tipo: 'ALyC integral N° 273 · Grupo Supervielle',
+    escala: 'Unos 1,5 millones de inversores (oct. 2024)',
+    modelo: 'Arancel según volumen del mes anterior (Gold, Platinum, Black)',
+    abono: 'No',
+    acc_std: 0.5, acc_best: 0.1, acc_best_txt: '0,1% con más de $50M operados el mes anterior',
+    acciones: '0,5% hasta $7,5M · 0,3% de $7,5M a $50M · 0,1% más de $50M (referenciados por AP/AAGI: hasta 1%)',
+    bonos: 'Mismos tramos que acciones',
+    opciones: 'Mismos tramos que acciones',
+    futuros: '0,15% del contrato',
+    intradia: 'Segunda pata bonificada (misma especie, plazo y moneda)',
+    cau_col: 'Pesos 1,8% TNA · USD 0,4% TNA',
+    cau_tom: 'Pesos y USD 3,6% TNA',
+    apalanc: 'Caución tomadora; sin cupo de aire publicado',
+    plataformas: 'Web y app IOL; integración con app Supervielle (oct. 2026)',
+    api: 'API publicada: 25.000 llamadas/mes bonificadas',
+    usa: 'Sí, IOL USA', usa_auto: true,
+    atencion: 'Autogestión, soporte y research',
+    fuente: 'invertironline.com/tarifas'
+  },
+  {
+    id: 'ieb', nombre: 'IEB+', tipo: 'Fintech de Grupo IEB (Invertir en Bolsa S.A., ALyC N° 246)',
+    escala: 'No publicado',
+    modelo: 'Suscripción mensual con 0% de comisiones',
+    abono: 'Investor $5.000 + IVA · Global Markets USD 15 + IVA (solo si operás)',
+    acc_std: null, acc_best: 0, acc_best_txt: '0% con plan Investor ($5.000 + IVA por mes)',
+    acciones: '0% con plan Investor (el plan gratuito solo incluye FCI, MEP y CCL)',
+    bonos: '0% con plan Investor',
+    opciones: 'No incluidas en los planes publicados', opciones_na: true,
+    futuros: 'Solo banca privada (desde USD 50.000)',
+    intradia: 'No aplica (0%)',
+    cau_col: 'Incluidas en el plan Investor',
+    cau_tom: 'No publicado', cau_tom_na: true,
+    apalanc: 'No publicado', apalanc_na: true,
+    plataformas: 'App IEB+; research IEB+Live',
+    api: 'No publicado', api_na: true,
+    usa: 'Sí, plan Global Markets', usa_auto: true,
+    atencion: 'Chat (Ibbie), WhatsApp y preguntas frecuentes',
+    fuente: 'iebmas.com.ar'
+  },
+  {
+    id: 'cocos', nombre: 'Cocos', tipo: 'ALyC propio N° 688 · compró Banco Voii',
+    escala: 'Más de 2 millones de clientes (2025) y más de USD 2.000M administrados',
+    modelo: 'Arancel fijo o planes (Pro con abono en USD; Wealth sobre cartera)',
+    abono: 'Pro desde USD 150 por mes · Wealth Management hasta 0,15% mensual de la cartera',
+    acc_std: 0.45, acc_best: 0, acc_best_txt: '0% con Cocos Pro (desde USD 150 por mes)',
+    acciones: '0,45% · 0% en Pro y Wealth Management',
+    bonos: '0,45% · 0% en Pro y Wealth Management',
+    opciones: '0,45% · Pro 0% · Wealth 1%',
+    futuros: '0,1% · Pro 0%',
+    intradia: 'No publicado',
+    cau_col: '2% TNA · Pro 1,5% · Wealth 3%',
+    cau_tom: '10% TNA · Pro 4% · Wealth 3%',
+    apalanc: 'Operaciones en descubierto (0,45%; 0% en Pro); sin cupo publicado',
+    plataformas: 'App propia y web 100% digitales; pagos con QR y compra de dólares',
+    api: 'No publicado', api_na: true,
+    usa: 'Por mandato en el exterior (0,2%); su tarifario no muestra operatoria directa en EE.UU.', usa_auto: false,
+    atencion: 'Modelo 100% digital, sin asesores',
+    fuente: 'cocos.capital/tarifario'
+  },
+  {
+    id: 'balanz', nombre: 'Balanz', tipo: 'ALyC integral N° 210 · gestora de FCI propia',
+    escala: 'Más de 1,3 millones de clientes (según su web)',
+    modelo: 'Arancel por operación (topes publicados)',
+    abono: 'No',
+    acc_std: 0.5, acc_best: null, acc_best_txt: 'Sin tramos publicados (tope)',
+    acciones: 'Hasta 0,5%',
+    bonos: 'Hasta 0,5%',
+    opciones: 'Hasta 0,5%',
+    futuros: 'Hasta 0,15%',
+    intradia: '50% de bonificación (misma especie, plazo y moneda)',
+    cau_col: 'Hasta 0,5% cada 90 días en pesos (≈2% TNA)',
+    cau_tom: 'Hasta 0,5% cada 90 días en pesos (≈2% TNA)',
+    apalanc: 'Caución tomadora; sin cupo de aire publicado',
+    plataformas: 'Web y app propias',
+    api: 'No publicado', api_na: true,
+    usa: 'Por mandato en el exterior (hasta 0,5%)', usa_auto: false,
+    atencion: 'Asesores; trading asistido hasta 1,5%; asesoramiento hasta 0,6% anual',
+    fuente: 'balanz.com/comisiones'
+  },
+  {
+    id: 'bull', nombre: 'Bull Market', tipo: 'ALyC · Bull Market Brokers S.A.',
+    escala: 'No publicado',
+    modelo: 'Arancel por tipo de cuenta según volumen del mes anterior',
+    abono: 'No',
+    acc_std: 0.5, acc_best: 0.1, acc_best_txt: '0,1% con más de $25M operados el mes anterior',
+    acciones: '0,5% · 0,25% con más de $5M · 0,1% con más de $25M',
+    bonos: 'Mismos tramos que acciones',
+    opciones: 'Mismos tramos; ejercicio igual',
+    futuros: '0,5% · 0,1% desde Active Trader',
+    intradia: '50% de bonificación (no aplica a MEP, opciones, letras ni EE.UU.)',
+    cau_col: '0,083% mensual (≈1% TNA)',
+    cau_tom: '0,5% mensual (≈6% TNA)',
+    apalanc: 'Apalancamiento habilitable, con poder de compra en pantalla; caución tomadora y alquiler de títulos; sin cupo publicado',
+    plataformas: 'Bull Market Platform (web y app); Matriz ($15.000 + IVA por mes, bonificada desde Active Trader)',
+    api: 'No publicado', api_na: true,
+    usa: 'Sí: acciones, ADRs y ETFs de EE.UU.', usa_auto: true,
+    atencion: 'Chat; operador telefónico desde 1% (opciones 1,5%)',
+    fuente: 'Tarifario oficial, mayo 2026'
+  },
+  {
+    id: 'eco', nombre: 'Eco Valores', tipo: 'ALyC propio N° 109',
+    escala: 'No publicado',
+    modelo: 'Arancel por operación con descuentos por volumen (Club de los Millones)',
+    abono: 'No',
+    acc_std: 0.33, acc_best: 0.25, acc_best_txt: '0,25% operando $30M por semana en 3 días o más (desde 0,13% con intradía)',
+    acciones: '0,33% · 0,25% con Club · desde 0,13% sumando intradía',
+    bonos: '0,49% · 0,19% con Club',
+    opciones: '0,21%',
+    futuros: '0,10% RFX20 · 0,25% dólar',
+    intradia: '100% del lado menor, aun entre especies distintas',
+    cau_col: '0,25% cada 30 días (≈3% TNA)',
+    cau_tom: 'Solo para clientes asesorados (0,5% cada 30 días)',
+    apalanc: 'Tomadoras solo con asesor; garantías de futuros a 1,2 veces los márgenes',
+    plataformas: 'TradingView integrado, Matriz (desktop y app), eTrader, EcoPortfolio',
+    api: 'API Trading publicada',
+    usa: 'Transferencias al exterior; custodia internacional a consultar', usa_auto: false,
+    atencion: 'EcoChat por WhatsApp; oficial idóneo CNV en el servicio asesorado',
+    fuente: 'ecovalores.com.ar/tarifario'
+  },
+  {
+    id: 'bcch', nombre: 'Bolsa del Chaco', tipo: 'Asociación civil · ALyC integral N° 7',
+    escala: 'No publicado',
+    modelo: 'Arancel por operación (Qü autogestión o con asesoramiento)',
+    abono: 'No',
+    acc_std: 0.45, acc_best: null, acc_best_txt: 'Sin tramos (con asesor 1%)',
+    acciones: 'Qü 0,45% · con asesor 1%',
+    bonos: 'Secundario: Qü 0,45% · con asesor 1% · primario 0,35%',
+    opciones: 'Qü 0,45% (ejercicio 0,4%) · con asesor 0,5%',
+    futuros: '0,5%',
+    intradia: 'No publicado',
+    cau_col: 'Pesos 4% · USD 0,2%',
+    cau_tom: 'Pesos 6% · USD 5%',
+    apalanc: 'No publicado', apalanc_na: true,
+    plataformas: 'Home Broker Qü, Home Broker, app BCCH Inversiones',
+    api: 'No publicado', api_na: true,
+    usa: 'No publicado', usa_auto: false, usa_na: true,
+    atencion: 'Asesores; foco regional (NEA)',
+    fuente: 'Tabla oficial de aranceles (bcch.org.ar)'
+  },
+  {
+    id: 'inviu', nombre: 'inviu', tipo: 'ALyC integral N° 205 · Grupo Financiero Galicia',
+    escala: 'No publicado',
+    modelo: 'Arancel por operación (topes) y fee de asesoramiento',
+    abono: 'No',
+    acc_std: 2.5, acc_best: null, acc_best_txt: 'Hasta 1,5% con asesor, más fee de hasta 3% anual',
+    acciones: 'Hasta 2,5% sin asesor · hasta 1,5% con asesor',
+    bonos: 'Hasta 2,5% sin asesor · hasta 1,5% con asesor',
+    opciones: 'Hasta 1,5%',
+    futuros: 'Hasta 1,5%',
+    intradia: 'No publicado',
+    cau_col: 'Hasta 3% TNA',
+    cau_tom: 'Hasta 6% TNA',
+    apalanc: 'Préstamo para venta en corto (hasta 1,5%)',
+    plataformas: 'App inviu',
+    api: 'No publicado', api_na: true,
+    usa: 'Transferencias al exterior (hasta USD 50)', usa_auto: false,
+    atencion: 'Modelo asesorado (fee de hasta 3% anual sobre la tenencia)',
+    fuente: 'Tabla de marzo 2026 (hay una actualización de octubre en CNV)'
+  }
+];
+
+const PLANES = [
+  { broker: 'VetaCap', me: true, plan: 'FLAT PRO', pesos: 85000, precio: '$85.000', tag: 'Abono en pesos',
+    items: ['0% en acciones, bonos, CEDEARs, opciones y futuros', 'Saldos y bonos de aire: 175% de la valorizada (tope $100M)', '50% OFF en cauciones colocadoras', 'Matriz DMA y Docta'] },
+  { broker: 'VetaCap', me: true, plan: 'FLAT ADVANCE', pesos: 160000, precio: '$160.000', tag: 'Abono en pesos',
+    items: ['Todo lo de PRO', 'Aire: 250% de la valorizada (tope $200M)'] },
+  { broker: 'VetaCap', me: true, plan: 'FLAT ELITE', pesos: 285000, precio: '$285.000', tag: 'Abono en pesos',
+    items: ['Todo lo de ADVANCE + OptionsDesk', 'Aire: 400% de la valorizada (tope $1.000M)', '100% OFF colocadoras; 50% OFF tomadoras y ejercicio'] },
+  { broker: 'IEB+', plan: 'Investor', pesos: 5000, precio: '$5.000', tag: 'Solo si operás',
+    items: ['0% en acciones, bonos, CEDEARs, ONs, letras y cauciones', 'Sin opciones ni futuros', 'Sin apalancamiento publicado'] },
+  { broker: 'IEB+', plan: 'Global Markets', usd: 15, precio: 'USD 15', tag: 'Solo si operás',
+    items: ['Todo lo de Investor', 'Acciones, ETFs y ADRs de EE.UU. sin comisión'] },
+  { broker: 'Cocos', plan: 'Cocos Pro', usd: 150, precio: 'USD 150', desde: true, tag: 'Abono en dólares',
+    items: ['0% en acciones, CEDEARs, bonos, letras, opciones, futuros y descubierto', 'Cauciones con arancel: tomadora 4% TNA, colocadora 1,5% TNA', 'Sin cupo de apalancamiento publicado'] },
+  { broker: 'Cocos', plan: 'Wealth Management', precio: 'Hasta 0,15%', unit: 'de la cartera por mes', tag: 'Sobre la cartera',
+    items: ['0% en acciones, CEDEARs, bonos y letras', 'Opciones 1%; futuros 0,1%', 'Cauciones 3% TNA'] }
+];
+
+const VEREDICTO = {
+  gana: [
+    { t: 'Cuenta web más barata del grupo', d: '0,15% en acciones, bonos, CEDEARs, ONs y opciones, contra 0,33% de Eco y 0,45% a 0,5% de IOL, Cocos, Balanz, Bull Market y Bolsa del Chaco. Solo lo bajan los tramos de alto volumen de IOL y Bull Market (0,1%) y el Club de los Millones de Eco sumando intradía (desde 0,13%).', vs: 'Todos' },
+    { t: 'Único que publica su cupo de apalancamiento', d: 'Saldos y bonos de aire de 175% a 400% de la valorizada, según el plan. Bull Market permite apalancarse con el poder de compra que muestra en pantalla y Cocos opera en descubierto, pero ninguno publica un cupo equivalente.', vs: 'Bull Market, Cocos' },
+    { t: 'Abono fijo con 0% en todo, en pesos', d: 'FLAT PRO bonifica acciones, bonos, CEDEARs, opciones y futuros por $85.000 + IVA. El único plan con esa cobertura es Cocos Pro, que al MEP del 19/10 cuesta desde unos $231.600 por mes.', vs: 'Cocos' },
+    { t: 'Paquete de herramientas para el trader activo', d: 'Matriz DMA, Docta Terminal y OptionsDesk dentro del plan. Eco y Bull Market también dan Matriz, y Eco suma TradingView, pero ninguno incluye un monitor de opciones como OptionsDesk en su oferta.', vs: 'Eco Valores, Bull Market' },
+    { t: 'Atención humana y comunidad', d: 'Asesor personal, grupo privado y Discord con research. Cocos e IEB+ son modelos 100% digitales; Eco es el que más se acerca, con atención por WhatsApp.', vs: 'Eco Valores, Cocos, IEB+' }
+  ],
+  pierde: [
+    { t: 'El FLAT compite contra nuestra propia cuenta web', d: 'Con la web al 0,15%, FLAT PRO recién conviene desde unos $56,7M operados por mes. Por debajo de ese volumen, lo que justifica el FLAT es el aire, no el ahorro en aranceles.', vs: 'VetaCap (cuenta web)' },
+    { t: 'Clientes de alto volumen sin plan', d: 'Entre $25M y $85M por mes, Bull Market Active Trader Plus (0,1%) es más barato que nuestra cuenta web y que FLAT PRO. IOL Black (0,1%) también, desde $50M.', vs: 'Bull Market, IOL' },
+    { t: 'Precio de entrada al 0%', d: 'IEB+ Investor da 0% en acciones, bonos, CEDEARs, ONs, letras y cauciones por $5.000 + IVA al mes, 17 veces menos que FLAT PRO, aunque sin opciones, futuros ni apalancamiento.', vs: 'IEB+' },
+    { t: 'Mercado de EE.UU. en autogestión', d: 'IOL, IEB+ y Bull Market permiten operar acciones y ETFs de EE.UU. desde su plataforma. En VetaCap solo se puede con asesor y al 1,5%.', vs: 'IOL, IEB+, Bull Market' },
+    { t: 'App propia', d: 'Los grandes operan con app y web propias; VetaCap depende del Virtual Broker de AUNE para la experiencia de cartera. IOL y Eco, además, publican su API y sus condiciones de uso.', vs: 'IOL, Cocos, Balanz, Bull Market, Eco Valores' }
+  ]
+};
+
+const SOURCES = [
+  ['VetaCap: tarifario oficial (oct. 2026) y Planes FLAT', 'https://vetacap.com.ar/personas/'],
+  ['IOL: tarifas oficiales', 'https://www.invertironline.com/tarifas'],
+  ['IEB+: planes oficiales', 'https://www.iebmas.com.ar/'],
+  ['Cocos: tarifario oficial', 'https://cocos.capital/tarifario'],
+  ['Balanz: aranceles y comisiones 2026', 'https://balanz.com/comisiones/'],
+  ['Bull Market: tarifario oficial (mayo 2026)', 'https://s3-sa-east-1.amazonaws.com/bmb.s3.webbucket/System/Files/Tarifario.pdf'],
+  ['Eco Valores: tarifario no asesorados', 'https://www.ecovalores.com.ar/tarifario.php'],
+  ['Bolsa de Comercio del Chaco: aranceles (tabla oficial)', 'https://bcch.org.ar/aranceles/'],
+  ['inviu: tabla de aranceles de marzo 2026 (Rankia)', 'https://www.rankia.com.ar/blog/analisis-merval/6987246-tarifas-comisiones-inviu'],
+  ['inviu: registro de tarifarios en CNV', 'https://www.cnv.gov.ar/SitioWeb/RegistrosPublicos/DetallesRegistrosPublicos/30887?tipoEntidadId=2'],
+  ['IOL: 1,5 millones de inversores (Mercado, oct. 2024)', 'https://mercado.com.ar/finanzas/iol-invertironline-es-el-broker-mas-elegido-por-los-argentinos-con-mas-de-15-millones-de-inversores'],
+  ['IOL y Supervielle: ecosistema integrado (iProUP, sep. 2026)', 'https://www.iproup.com/economia-digital/71805-supervielle-y-iol-lanzan-un-ecosistema-integrado-en-octubre'],
+  ['Cocos: clientes y activos (NeoFeed, jul. 2026)', 'https://neofeed.com.br/negocios/o-que-a-cocos-capital-quer-do-brasil-apos-adquirir-a-warren/es/'],
+  ['Balanz: más de 1,3 millones de clientes', 'https://balanz.com/empresa/'],
+  ['IOL: centro de ayuda (stop loss, licitaciones, transferencias)', 'https://iol.invertironline.com/AutoGestion'],
+  ['IOL: ficha de la app (MEP, cuenta remunerada, licitaciones)', 'https://apps.apple.com/app/id1615111890'],
+  ['IEB+: preguntas frecuentes', 'https://www.iebmas.com.ar/preguntas-frecuentes/'],
+  ['Eco Valores: preguntas frecuentes', 'https://www.ecovalores.com.ar/preguntas-frecuentes.php'],
+  ['Cocos: rendimiento de tu portfolio (centro de ayuda)', 'https://intercom.help/cocoscapital/es/articles/16176581-rendimiento-de-tu-portfolio'],
+  ['Cocos: sitio oficial (dólares y FCI 24/7)', 'https://cocos.capital/'],
+  ['Balanz: ficha de la app', 'https://mwm.ai/apps/balanz/1318206099'],
+  ['inviu: ficha de la app', 'https://mwm.ai/apps/inviu/1516524838'],
+  ['Bull Market: stop loss (centro de ayuda)', 'https://help.bullmarketbrokers.com/operar/como-cargar-un-stop-loss/'],
+  ['Bull Market: dólar MEP en un clic', 'https://help.bullmarketbrokers.com/faq/como-comprar-y-vender-dolar-mep/'],
+  ['Bull Market: cómo licitar', 'https://help.bullmarketbrokers.com/operar/como-licitar/'],
+  ['Bull Market: resultado por posición', 'https://help.bullmarketbrokers.com/plataforma/consultar-resultado-posicion/'],
+  ['Bull Market: apalancamiento', 'https://help.bullmarketbrokers.com/faq/que-es-el-apalancamiento/'],
+  ['Dólar MEP de cierre del 19/10/2026 (LM Neuquén)', 'https://www.lmneuquen.com/pais/dolar-hoy-oficial-blue-cotizaciones-lunes-19-octubre-2026']
+];
+
+/* Costo mensual en acciones y CEDEARs según volumen V (pesos), opción más barata de cada broker */
+const COSTOS = [
+  { nombre: 'VetaCap', sub: 'Cuenta web', me: true, f: (V) => ({ c: 0.0015 * V, o: '0,15% por operación' }) },
+  { nombre: 'VetaCap', sub: 'FLAT PRO', me: true, f: () => ({ c: 85000, o: 'Abono fijo' }) },
+  { nombre: 'IOL', f: (V) => V > 50e6 ? { c: 0.001 * V, o: 'Black, 0,1%' } : V > 7.5e6 ? { c: 0.003 * V, o: 'Platinum, 0,3%' } : { c: 0.005 * V, o: 'Gold, 0,5%' } },
+  { nombre: 'IEB+', f: () => ({ c: 5000, o: 'Plan Investor' }) },
+  { nombre: 'Cocos', f: (V) => { const pro = 150 * MEP, std = 0.0045 * V; return std <= pro ? { c: std, o: 'Estándar, 0,45%' } : { c: pro, o: 'Cocos Pro (desde USD 150)' }; } },
+  { nombre: 'Balanz', f: (V) => ({ c: 0.005 * V, o: 'Hasta 0,5%' }) },
+  { nombre: 'Bull Market', f: (V) => V > 25e6 ? { c: 0.001 * V, o: 'Active Trader Plus, 0,1%' } : V > 5e6 ? { c: 0.0025 * V, o: 'Active Trader, 0,25%' } : { c: 0.005 * V, o: 'Digital, 0,5%' } },
+  { nombre: 'Eco Valores', f: (V) => V >= 130e6 ? { c: 0.0025 * V, o: 'Club de los Millones, 0,25%' } : { c: 0.0033 * V, o: 'Estándar, 0,33%' } },
+  { nombre: 'Bolsa del Chaco', f: (V) => ({ c: 0.0045 * V, o: 'Qü, 0,45%' }) },
+  { nombre: 'inviu', f: (V) => ({ c: 0.025 * V, o: 'Tope sin asesor, 2,5%' }) }
+];
+const VOLS = [1e6, 5e6, 10e6, 20e6, 30e6, 50e6, 75e6, 100e6, 150e6, 200e6];
+
+/* ---------- formato ---------- */
+const nf = (d) => new Intl.NumberFormat('es-AR', { minimumFractionDigits: 0, maximumFractionDigits: d });
+const pct = (v) => nf(2).format(v) + '%';
+const money = (v) => '$' + nf(0).format(Math.round(v));
+const moneyM = (v) => '$' + nf(1).format(v / 1e6) + 'M';
+const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) e.className = cls; if (txt !== undefined) e.textContent = txt; return e; };
+
+/* ---------- resumen ---------- */
+(function summary() {
+  const veta = BROKERS.find((b) => b.me);
+  const others = BROKERS.filter((b) => !b.me && b.acc_std != null);
+  const nextStd = Math.min(...others.map((b) => b.acc_std));
+  const nextName = others.find((b) => b.acc_std === nextStd).nombre;
+  const be = 85000 / (veta.acc_std / 100);
+  const items = [
+    ['Cuenta web más barata del grupo y único cupo de apalancamiento publicado.', ' Cobramos ' + pct(veta.acc_std) + ' contra ' + pct(nextStd) + ' de ' + nextName + ', y somos los únicos que publican un cupo de apalancamiento: los saldos y bonos de aire.'],
+    ['El FLAT se vende por el aire, no por el ahorro.', ' Frente a nuestra propia cuenta web, FLAT PRO recién conviene desde ' + moneyM(be) + ' operados por mes.'],
+    ['Tres frentes a vigilar.', ' IEB+ da 0% por $5.000 al mes; Bull Market e IOL bajan a 0,1% para clientes de alto volumen; y ' + ['cero','uno','dos','tres','cuatro','cinco'][BROKERS.filter((b) => b.usa_auto).length] + ' competidores ofrecen EE.UU. en autogestión.']
+  ];
+  const ul = document.getElementById('summary');
+  items.forEach(([b, t], i) => { const li = el('li'); li.appendChild(el('span', 'n', String(i + 1))); const p = el('span'); p.appendChild(el('b', '', b)); p.appendChild(document.createTextNode(t)); li.appendChild(p); ul.appendChild(li); });
+})();
+
+/* ---------- indicadores ---------- */
+(function tiles() {
+  const conStd = BROKERS.filter((b) => b.acc_std != null);
+  const min = conStd.reduce((a, b) => b.acc_std < a.acc_std ? b : a);
+  const abono = new Set(PLANES.map((p) => p.broker)).size;
+  const usa = BROKERS.filter((b) => b.usa_auto).length;
+  const T = [
+    ['Arancel estándar más bajo', pct(min.acc_std), min.nombre + ' · acciones y CEDEARs', min.me],
+    ['Publican cupo de apalancamiento', '1 de ' + BROKERS.length, 'Saldos y bonos de aire de VetaCap', true],
+    ['Venden abono fijo', abono + ' de ' + BROKERS.length, 'VetaCap, IEB+ y Cocos', false],
+    ['EE.UU. en autogestión', usa + ' de ' + BROKERS.length, 'VetaCap lo ofrece solo con asesor', false]
+  ];
+  const box = document.getElementById('tiles');
+  T.forEach(([l, v, s, b]) => { const t = el('div', 'tile'); t.appendChild(el('span', 'lbl', l)); t.appendChild(el('span', 'val' + (b ? ' brand' : ''), v)); t.appendChild(el('span', 'sub', s)); box.appendChild(t); });
+})();
+
+/* ---------- ranking de aranceles ---------- */
+(function rank() {
+  const MAX = 0.6;
+  const box = document.getElementById('rank');
+  const head = el('div', 'rank-head');
+  ['Broker', 'Arancel por operación', 'Mejor tramo o plan'].forEach((h) => head.appendChild(el('div', '', h)));
+  box.appendChild(head);
+  const rows = BROKERS.slice().sort((a, b) => {
+    const av = a.acc_std == null ? 99 : a.acc_std, bv = b.acc_std == null ? 99 : b.acc_std;
+    return av - bv;
+  });
+  rows.forEach((b) => {
+    const r = el('div', 'rank-row' + (b.me ? ' me' : ''));
+    const n = el('div', 'rank-name'); n.appendChild(el('span', '', b.nombre)); n.appendChild(el('small', '', b.tipo.split(' · ')[0])); r.appendChild(n);
+    const bars = el('div', 'bars');
+    const l1 = el('div', 'bar-line');
+    if (b.acc_std == null) {
+      l1.appendChild(el('span', 'bar-val small', 'No cobra por operación: abono mensual'));
+    } else {
+      const over = b.acc_std > MAX;
+      const bar = el('div', 'bar std' + (over ? ' trunc' : ''));
+      bar.style.width = 'calc(' + (Math.min(b.acc_std, MAX) / MAX * 100) + '% - 70px)';
+      l1.appendChild(bar);
+      l1.appendChild(el('span', 'bar-val', pct(b.acc_std) + (over ? ' ›' : '')));
+    }
+    bars.appendChild(l1);
+    if (b.acc_best != null) {
+      const l2 = el('div', 'bar-line');
+      const bb = el('div', 'bar best'); bb.style.width = 'calc(' + (b.acc_best / MAX * 100) + '% - 70px)';
+      l2.appendChild(bb); l2.appendChild(el('span', 'bar-val small', pct(b.acc_best)));
+      bars.appendChild(l2);
+    }
+    r.appendChild(bars);
+    r.appendChild(el('div', 'rank-best', b.acc_best_txt));
+    box.appendChild(r);
+  });
+  const ax = document.getElementById('axis');
+  [0, 0.1, 0.2, 0.3, 0.4, 0.5].forEach((t) => { const s = el('span', '', pct(t)); s.style.left = 'calc(' + (t / MAX * 100) + '% - ' + (t / MAX * 70) + 'px)'; ax.appendChild(s); });
+})();
+
+/* ---------- simulador ---------- */
+(function sim() {
+  const steps = document.getElementById('steps');
+  let cur = 20e6;
+  const draw = () => {
+    document.getElementById('sim-v').textContent = moneyM(cur);
+    steps.querySelectorAll('button').forEach((b) => b.setAttribute('aria-pressed', String(Number(b.dataset.v) === cur)));
+    const rows = COSTOS.map((c) => { const r = c.f(cur); return { ...c, c: r.c, o: r.o }; }).sort((a, b) => a.c - b.c);
+    const visible = rows.filter((r) => r.nombre !== 'inviu');
+    const max = Math.max(...visible.map((r) => r.c)) * 1.02;
+    const box = document.getElementById('sim'); box.textContent = '';
+    rows.forEach((r, i) => {
+      const row = el('div', 'sim-row' + (r.me ? ' me' : ''));
+      const n = el('div', 'sim-name'); n.appendChild(el('span', '', (i + 1) + '. ' + r.nombre + (r.sub ? ' · ' + r.sub : ''))); n.appendChild(el('small', '', r.o)); row.appendChild(n);
+      const line = el('div', 'bar-line');
+      const over = r.c > max;
+      const bar = el('div', 'bar' + (over ? ' trunc' : '')); bar.style.width = 'calc(' + (Math.min(r.c, max) / max * 100) + '% - 90px)';
+      line.appendChild(bar); line.appendChild(el('span', 'bar-val', money(r.c) + (over ? ' ›' : '')));
+      row.appendChild(line); box.appendChild(row);
+    });
+    const web = rows.find((r) => r.me && r.sub === 'Cuenta web');
+    const flat = rows.find((r) => r.me && r.sub === 'FLAT PRO');
+    const bestVeta = web.c <= flat.c ? web : flat;
+    const ranked = rows.filter((r) => !r.me || r === bestVeta);
+    const pos = ranked.indexOf(bestVeta) + 1;
+    const first = ranked[0];
+    const perOp = ranked.filter((r) => r.nombre !== 'IEB+');
+    const firstOp = perOp[0];
+    const take = document.getElementById('sim-take'); take.textContent = '';
+    const b = el('b', '', 'Con ' + moneyM(cur) + ' por mes, ');
+    take.appendChild(b);
+    let t = 'la opción más conveniente de VetaCap es ' + (bestVeta.sub === 'FLAT PRO' ? 'FLAT PRO' : 'la cuenta web') + ' (' + money(bestVeta.c) + '): puesto ' + pos + ' de ' + ranked.length + ' brokers. ';
+    if (first !== bestVeta) t += 'La más barata es ' + first.nombre + ' (' + first.o + (first.nombre === 'IEB+' ? ', sin opciones, futuros ni apalancamiento' : '') + '), con ' + money(first.c) + '. ';
+    if (firstOp && firstOp !== bestVeta && firstOp !== first) t += 'Sin contar IEB+, la más barata es ' + firstOp.nombre + ' (' + firstOp.o + '), con ' + money(firstOp.c) + '.';
+    else if (firstOp === bestVeta && first !== bestVeta) t += 'Sin contar IEB+, VetaCap es la más barata.';
+    take.appendChild(document.createTextNode(t));
+  };
+  VOLS.forEach((v) => { const b = el('button', '', moneyM(v).replace(',0M', 'M')); b.type = 'button'; b.dataset.v = String(v); b.addEventListener('click', () => { cur = v; draw(); }); steps.appendChild(b); });
+  draw();
+})();
+
+/* ---------- planes ---------- */
+(function plans() {
+  const box = document.getElementById('plans');
+  PLANES.forEach((p) => {
+    const c = el('div', 'plan' + (p.me ? ' me' : ''));
+    const top = el('div', 'plan-top'); top.appendChild(el('span', 'plan-broker', p.broker)); top.appendChild(el('span', 'pill', p.tag)); c.appendChild(top);
+    c.appendChild(el('h3', 'plan-name', p.plan));
+    const pr = el('div', 'plan-price');
+    pr.appendChild(document.createTextNode((p.desde ? 'Desde ' : '') + p.precio + ' '));
+    pr.appendChild(el('small', '', p.unit ? p.unit : '+ IVA por mes'));
+    c.appendChild(pr);
+    if (p.usd) c.appendChild(el('div', 'plan-conv', '≈ ' + money(p.usd * MEP) + ' al MEP del 19/10'));
+    const ul = el('ul'); p.items.forEach((i) => ul.appendChild(el('li', '', i))); c.appendChild(ul);
+    box.appendChild(c);
+  });
+})();
+
+/* ---------- matriz ---------- */
+(function matrix() {
+  const GROUPS = [
+    ['Perfil', [['tipo', 'Tipo y grupo'], ['escala', 'Escala publicada']]],
+    ['Costos', [['modelo', 'Modelo de cobro'], ['abono', 'Abono fijo'], ['acciones', 'Acciones y CEDEARs'], ['bonos', 'Bonos y ONs'], ['opciones', 'Opciones'], ['futuros', 'Futuros'], ['intradia', 'Intradía']]],
+    ['Financiamiento', [['cau_col', 'Caución colocadora'], ['cau_tom', 'Caución tomadora'], ['apalanc', 'Apalancamiento']]],
+    ['Plataforma y servicio', [['plataformas', 'Plataformas'], ['api', 'API y bots'], ['usa', 'Mercado de EE.UU.'], ['atencion', 'Atención y comunidad']]],
+    ['Fuente', [['fuente', 'Fuente']]]
+  ];
+  const t = document.getElementById('matrix');
+  const thead = el('thead'); const hr = el('tr');
+  hr.appendChild(el('th', 'dim', 'Dimensión'));
+  BROKERS.forEach((b) => hr.appendChild(el('th', b.me ? 'me' : '', b.nombre)));
+  thead.appendChild(hr); t.appendChild(thead);
+  const tb = el('tbody');
+  GROUPS.forEach(([g, dims]) => {
+    const gr = el('tr', 'group'); const gc = el('td'); gc.colSpan = BROKERS.length + 1; gc.appendChild(el('span', '', g)); gr.appendChild(gc); tb.appendChild(gr);
+    dims.forEach(([k, label]) => {
+      const tr = el('tr'); tr.appendChild(el('td', 'dim', label));
+      BROKERS.forEach((b) => {
+        const v = b[k];
+        const na = b[k + '_na'] || v === 'No publicado' || v === 'No';
+        tr.appendChild(el('td', (b.me ? 'me' : '') + (na && !b.me ? ' na' : ''), v));
+      });
+      tb.appendChild(tr);
+    });
+  });
+  t.appendChild(tb);
+})();
+
+
+/* ---------- funcionalidades ---------- */
+const FEATS = [
+  { label: 'Órdenes stop', desc: 'Stop loss u órdenes condicionales', c: {
+    veta: ['conf', 'A confirmar (vía Matriz)'], iol: ['si', 'Stop loss, con términos en su centro de ayuda'], ieb: ['no', 'No figura en su FAQ'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura'],
+    bull: ['parcial', 'Stop con límite'], eco: ['parcial', 'Stop limit; no stop market'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { label: 'Dólar MEP desde la app', desc: 'Comprar y vender MEP sin armar la operación a mano', c: {
+    veta: ['conf', 'A confirmar'], iol: ['si', '"Dólar MEP Simple" en la app'], ieb: ['si', 'Botón "Operá con Dólar MEP" en la pantalla inicial'], cocos: ['si', 'Compra y venta de dólares en la app, 24/7'], balanz: ['si', 'Compra y venta de MEP en la app'],
+    bull: ['si', 'Compra y venta de MEP en un clic'], eco: ['parcial', 'Por EcoChat, vía bonos'], bcch: ['no', 'No figura'], inviu: ['si', 'MEP en la app'] } },
+  { label: 'Saldo que rinde solo', desc: 'Remuneración o barrido automático del efectivo libre', c: {
+    veta: ['parcial', 'FCI en dólares que sirve como garantía; sin barrido automático'], iol: ['si', 'Cuenta remunerada en dólares con interés diario'], ieb: ['parcial', 'FCI T+0 y T+1 en el plan gratuito'], cocos: ['parcial', 'FCI con dinero disponible 24/7; sin barrido automático publicado'], balanz: ['parcial', 'FCI Money Market'],
+    bull: ['no', 'No figura'], eco: ['no', 'No figura'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { label: 'Resultado de la cartera', desc: 'P&L y seguimiento de resultados', c: {
+    veta: ['si', 'Docta Terminal con P&L automático'], iol: ['no', 'No figura'], ieb: ['parcial', 'Precio de compra en "Mis operaciones"'], cocos: ['si', 'Pestaña Rendimiento: retorno de la cartera y de cada activo'], balanz: ['no', 'No figura'],
+    bull: ['parcial', 'Ganancia o pérdida por posición contra el precio promedio'], eco: ['si', 'EcoPortfolio: tenencias, históricos y resultados'], bcch: ['no', 'No figura'], inviu: ['parcial', 'Composición de cartera, sin resultados'] } },
+  { label: 'Licitaciones desde la plataforma', desc: 'Letras, bonos y ONs en mercado primario', c: {
+    veta: ['conf', 'Sin arancel; canal a confirmar'], iol: ['si', 'Licitaciones primarias en la app, con filtros'], ieb: ['no', 'No figura'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura en la app'],
+    bull: ['si', 'Pestaña Licitaciones en su plataforma web'], eco: ['parcial', 'Por EcoChat'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { label: 'Recibir títulos de otro broker', desc: 'Transferencia entrante de la tenencia', c: {
+    veta: ['si', 'Sin cargo'], iol: ['si', 'Recepción sin cargo'], ieb: ['si', 'Recepción asistida por mail'], cocos: ['si', 'Recepción sin cargo'], balanz: ['si', 'Recepción sin cargo'],
+    bull: ['si', 'Recepción sin cargo'], eco: ['si', 'Asistencia para traer tenencias de otros brokers'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { label: 'API para clientes', desc: 'Trading algorítmico', c: {
+    veta: ['parcial', 'Bots con homologación previa'], iol: ['si', 'API publicada, con habilitación previa (25.000 llamadas/mes)'], ieb: ['no', 'No figura'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura'],
+    bull: ['no', 'No figura'], eco: ['si', 'API REST y FIX, con homologación de Primary'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } }
+];
+const ST_TXT = { si: 'Sí', parcial: 'Parcial', no: 'No figura', conf: 'A confirmar' };
+const CUSTODIA = [
+  'Cocos Wealth Management cobra hasta 0,15% mensual sobre la cartera y no cobra arancel en acciones, CEDEARs, bonos ni letras.',
+  'Bull Market baja el arancel por capital invertido en acciones, CEDEARs, bonos, ONs y opciones: 0,40% con más de USD 100.000 (Wealth Management) y 0,25% con más de USD 250.000 (Wealth Management Premium).'
+];
+const OPORTUNIDADES = [
+  'Un reporte anual listo para Ganancias y Bienes Personales, con retenciones.',
+  'Un incentivo por traer la cartera desde otra ALyC (por ejemplo, meses de FLAT sin costo según lo transferido).',
+  'Una vista en vivo de las garantías comprometidas y la distancia a un margin call. Bull Market muestra el poder de compra en pantalla, pero nadie publica esa vista.'
+];
+(function feats() {
+  const t = document.getElementById('feat');
+  const thead = el('thead'); const hr = el('tr');
+  hr.appendChild(el('th', 'dim', 'Funcionalidad'));
+  BROKERS.forEach((b) => hr.appendChild(el('th', b.me ? 'me' : '', b.nombre)));
+  thead.appendChild(hr); t.appendChild(thead);
+  const tb = el('tbody');
+  FEATS.forEach((f) => {
+    const tr = el('tr');
+    const d = el('td', 'dim'); d.appendChild(el('b', '', f.label)); d.appendChild(el('span', '', f.desc)); tr.appendChild(d);
+    BROKERS.forEach((b) => {
+      const [st, txt] = f.c[b.id];
+      const td = el('td', b.me ? 'me' : '');
+      td.appendChild(el('span', 'st ' + st, ST_TXT[st]));
+      if (txt && st !== 'no' && txt !== 'A confirmar') td.appendChild(el('span', 'det', txt));
+      tr.appendChild(td);
+    });
+    tb.appendChild(tr);
+  });
+  t.appendChild(tb);
+  const cu = document.getElementById('custodia'); CUSTODIA.forEach((x) => cu.appendChild(el('li', '', x)));
+  const op = document.getElementById('oportunidades'); OPORTUNIDADES.forEach((x) => op.appendChild(el('li', '', x)));
+})();
+
+/* ---------- veredicto ---------- */
+(function verdict() {
+  const box = document.getElementById('verdict');
+  [['gana', 'Dónde gana'], ['pierde', 'Dónde pierde']].forEach(([k, h]) => {
+    const col = el('div', 'v-col ' + k); col.appendChild(el('h3', '', h));
+    VEREDICTO[k].forEach((i) => { const it = el('div', 'v-item'); it.appendChild(el('h4', '', i.t)); it.appendChild(el('p', '', i.d)); it.appendChild(el('div', 'vs', 'Frente a: ' + i.vs)); col.appendChild(it); });
+    box.appendChild(col);
+  });
+})();
+
+/* ---------- fuentes ---------- */
+(function sources() {
+  const ul = document.getElementById('src');
+  SOURCES.forEach(([t, u]) => { const li = el('li'); const a = el('a', '', t); a.href = u; a.target = '_blank'; a.rel = 'noopener noreferrer'; li.appendChild(a); ul.appendChild(li); });
+})();
+</script>
+</body>
+</html>
