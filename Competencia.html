@@ -40,7 +40,7 @@
 * { box-sizing: border-box; }
 html, body { margin: 0; background: var(--bg); color: var(--fg); font-family: var(--sans); -webkit-font-smoothing: antialiased; }
 body { font-size: 15px; line-height: 1.5; }
-.wrap { max-width: 1200px; margin: 0 auto; padding: 0 20px 64px; }
+.wrap { max-width: 1680px; margin: 0 auto; padding: 0 28px 64px; }
 .topbar { border-bottom: 1px solid var(--line); background: var(--panel); }
 .topbar .wrap { display: flex; align-items: center; justify-content: space-between; padding-top: 14px; padding-bottom: 14px; gap: 12px; }
 .logo { font-weight: 800; letter-spacing: .06em; font-size: 18px; color: var(--brand); }
@@ -134,12 +134,12 @@ h2 { font-size: 22px; font-weight: 650; margin: 0; letter-spacing: -.01em; }
 .plan.me li::before { color: var(--brand); }
 
 /* Matriz */
-.matrix-wrap { overflow: auto; max-height: 78vh; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); box-shadow: var(--shadow); }
-table.matrix { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1500px; font-size: 13px; }
+.matrix-wrap { overflow-x: auto; border: 1px solid var(--line); border-radius: var(--radius); background: var(--panel); box-shadow: var(--shadow); }
+table.matrix { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1180px; table-layout: fixed; font-size: 13px; }
 .matrix th, .matrix td { padding: 10px 12px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
-.matrix thead th { position: sticky; top: 0; z-index: 3; background: var(--panel); font-size: 14px; font-weight: 650; border-bottom: 1px solid var(--line); min-width: 150px; }
+.matrix thead th { background: var(--panel); font-size: 14px; font-weight: 650; border-bottom: 1px solid var(--line); }
 .matrix thead th.me { background: var(--brand-soft); color: var(--brand-strong); }
-.matrix th.dim, .matrix td.dim { position: sticky; left: 0; z-index: 2; background: var(--panel); min-width: 170px; max-width: 190px; font-weight: 600; color: var(--fg-2); border-right: 1px solid var(--line); }
+.matrix th.dim, .matrix td.dim { position: sticky; left: 0; z-index: 2; background: var(--panel); width: 165px; font-weight: 600; color: var(--fg-2); border-right: 1px solid var(--line); }
 .matrix thead th.dim { z-index: 4; }
 .matrix td.me { background: var(--brand-soft); color: var(--fg); font-weight: 500; }
 .matrix tr.group td { background: var(--bg); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-3); padding: 8px 12px; position: sticky; left: 0; }
@@ -149,11 +149,13 @@ table.matrix { border-collapse: separate; border-spacing: 0; width: 100%; min-wi
 
 
 /* Funcionalidades */
-table.feat { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1350px; font-size: 13px; }
+table.feat { border-collapse: separate; border-spacing: 0; width: 100%; min-width: 1180px; table-layout: fixed; font-size: 13px; }
 .feat th, .feat td { padding: 10px 12px; border-bottom: 1px solid var(--line-2); text-align: left; vertical-align: top; }
-.feat thead th { position: sticky; top: 0; z-index: 3; background: var(--panel); font-size: 14px; font-weight: 650; border-bottom: 1px solid var(--line); min-width: 120px; }
+.feat thead th { background: var(--panel); font-size: 14px; font-weight: 650; border-bottom: 1px solid var(--line); }
 .feat thead th.me { background: var(--brand-soft); color: var(--brand-strong); }
-.feat th.dim, .feat td.dim { position: sticky; left: 0; z-index: 2; background: var(--panel); min-width: 190px; max-width: 210px; border-right: 1px solid var(--line); }
+.feat th.dim, .feat td.dim { position: sticky; left: 0; z-index: 2; background: var(--panel); width: 185px; border-right: 1px solid var(--line); }
+.feat tr.group td { background: var(--bg); font-size: 11px; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--fg-3); padding: 8px 12px; }
+.st.cobra { color: var(--bad); } .st.cobra::before { background: var(--bad); }
 .feat thead th.dim { z-index: 4; }
 .feat td.dim b { display: block; font-weight: 650; color: var(--fg); }
 .feat td.dim span { color: var(--fg-3); font-size: 12px; }
@@ -279,7 +281,7 @@ table.feat { border-collapse: separate; border-spacing: 0; width: 100%; min-widt
     <div class="sec-head">
       <div>
         <h2>Comparativa completa</h2>
-        <p class="sec-sub">Todas las dimensiones relevadas, broker por broker. Desplazá hacia la derecha para ver el resto.</p>
+        <p class="sec-sub">Todas las dimensiones relevadas, broker por broker, según su tarifario y su web.</p>
       </div>
     </div>
     <div class="matrix-wrap"><table class="matrix" id="matrix"></table></div>
@@ -289,12 +291,12 @@ table.feat { border-collapse: separate; border-spacing: 0; width: 100%; min-widt
   <section id="funcionalidades">
     <div class="sec-head">
       <div>
-        <h2>Funcionalidades de plataforma</h2>
-        <p class="sec-sub">Lo que cada broker documenta públicamente (tarifario, centro de ayuda, preguntas frecuentes y ficha de su app). "No figura" significa que no aparece en ese material, no que el broker no lo tenga.</p>
+        <h2>Funcionalidades y costos de servicio</h2>
+        <p class="sec-sub">Lo que cada broker documenta públicamente (tarifario, centro de ayuda, preguntas frecuentes y ficha de su app). En los competidores, "No figura" significa que no aparece en ese material, no que el broker no lo tenga. Los datos de VetaCap son internos.</p>
       </div>
     </div>
     <div class="feat-legend">
-      <span class="st si">Sí</span><span class="st parcial">Parcial</span><span class="st no">No figura</span><span class="st conf">A confirmar (VetaCap)</span>
+      <span class="st si">Sí / sin cargo</span><span class="st parcial">Parcial o con condiciones</span><span class="st cobra">Con cargo</span><span class="st no">No ofrece o no figura</span>
     </div>
     <div class="matrix-wrap"><table class="feat" id="feat"></table></div>
     <div class="callouts">
@@ -328,7 +330,7 @@ table.feat { border-collapse: separate; border-spacing: 0; width: 100%; min-widt
       <h3>Metodología</h3>
       <p>Aranceles de la cuenta online para personas humanas, sin IVA ni derechos de mercado. Donde el broker publica topes ("hasta"), se toma el tope. VetaCap y Bolsa de Comercio del Chaco publican su tabla como imagen; se transcribió de esas tablas oficiales.</p>
       <p>El costo mensual supone un volumen parejo de mes a mes (los tramos de IOL y Bull Market se calculan con el volumen del mes anterior), sin bonificaciones intradía y con el MEP de cierre del 19/10/2026 ($1.544,1) para los planes en dólares. El Club de los Millones de Eco ($30M por semana en al menos 3 días) se aproxima a $130M por mes. Los tramos de IOL no aplican a clientes referenciados por agentes productores (hasta 1%). El precio de Cocos Pro es un mínimo ("desde USD 150").</p>
-      <p>Las comisiones pueden cambiar sin aviso; conviene confirmar cada valor antes de usarlo con clientes.</p>
+      <p>Los datos de inviu salen de una fuente secundaria (Rankia), porque su tabla oficial de octubre 2026 en CNV no se pudo leer. Las comisiones pueden cambiar sin aviso; conviene confirmar cada valor antes de usarlo con clientes.</p>
     </div>
   </section>
 </div>
@@ -339,8 +341,7 @@ const MEP = 1544.1;
 const BROKERS = [
   {
     id: 'veta', nombre: 'VetaCap', me: true,
-    tipo: 'ALyC · Veta Capital S.A.',
-    escala: 'Unos 730 clientes con FLAT (dato interno)',
+    tipo: 'ALyC · Veta Capital S.A. · unos 730 clientes con FLAT',
     modelo: 'Cuenta web con arancel bajo o abono fijo (VetaFLAT)',
     abono: 'FLAT PRO $85.000 · ADVANCE $160.000 · ELITE $285.000 (+ IVA por mes)',
     acc_std: 0.15, acc_best: 0, acc_best_txt: '0% con FLAT (abono fijo)',
@@ -359,8 +360,7 @@ const BROKERS = [
     fuente: 'Tarifario oficial y vetacap.com.ar/personas'
   },
   {
-    id: 'iol', nombre: 'IOL', tipo: 'ALyC integral N° 273 · Grupo Supervielle',
-    escala: 'Unos 1,5 millones de inversores (oct. 2024)',
+    id: 'iol', nombre: 'IOL', tipo: 'ALyC integral N° 273 · Grupo Supervielle · unos 1,5 millones de inversores (2024)',
     modelo: 'Arancel según volumen del mes anterior (Gold, Platinum, Black)',
     abono: 'No',
     acc_std: 0.5, acc_best: 0.1, acc_best_txt: '0,1% con más de $50M operados el mes anterior',
@@ -380,27 +380,25 @@ const BROKERS = [
   },
   {
     id: 'ieb', nombre: 'IEB+', tipo: 'Fintech de Grupo IEB (Invertir en Bolsa S.A., ALyC N° 246)',
-    escala: 'No publicado',
     modelo: 'Suscripción mensual con 0% de comisiones',
     abono: 'Investor $5.000 + IVA · Global Markets USD 15 + IVA (solo si operás)',
     acc_std: null, acc_best: 0, acc_best_txt: '0% con plan Investor ($5.000 + IVA por mes)',
     acciones: '0% con plan Investor (el plan gratuito solo incluye FCI, MEP y CCL)',
     bonos: '0% con plan Investor',
-    opciones: 'No incluidas en los planes publicados', opciones_na: true,
-    futuros: 'Solo banca privada (desde USD 50.000)',
+    opciones: 'Sin arancel según su tarifario de planes (sin plan, hasta 2,5%)',
+    futuros: 'No incluidos en los planes; solo banca privada (desde USD 50.000)',
     intradia: 'No aplica (0%)',
     cau_col: 'Incluidas en el plan Investor',
-    cau_tom: 'No publicado', cau_tom_na: true,
-    apalanc: 'No publicado', apalanc_na: true,
+    cau_tom: 'Hasta 10% en el arancel general; no incluida en los planes',
+    apalanc: 'Sin cupo publicado; el descubierto paga tasa de caución a 7 días más gastos',
     plataformas: 'App IEB+; research IEB+Live',
-    api: 'No publicado', api_na: true,
+    api: 'No figura', api_na: true,
     usa: 'Sí, plan Global Markets', usa_auto: true,
     atencion: 'Chat (Ibbie), WhatsApp y preguntas frecuentes',
-    fuente: 'iebmas.com.ar'
+    fuente: 'iebmas.com.ar y tarifario de Invertir en Bolsa'
   },
   {
-    id: 'cocos', nombre: 'Cocos', tipo: 'ALyC propio N° 688 · compró Banco Voii',
-    escala: 'Más de 2 millones de clientes (2025) y más de USD 2.000M administrados',
+    id: 'cocos', nombre: 'Cocos', tipo: 'ALyC propio N° 688 · compró Banco Voii · más de 2 millones de clientes (2025)',
     modelo: 'Arancel fijo o planes (Pro con abono en USD; Wealth sobre cartera)',
     abono: 'Pro desde USD 150 por mes · Wealth Management hasta 0,15% mensual de la cartera',
     acc_std: 0.45, acc_best: 0, acc_best_txt: '0% con Cocos Pro (desde USD 150 por mes)',
@@ -408,19 +406,18 @@ const BROKERS = [
     bonos: '0,45% · 0% en Pro y Wealth Management',
     opciones: '0,45% · Pro 0% · Wealth 1%',
     futuros: '0,1% · Pro 0%',
-    intradia: 'No publicado',
+    intradia: 'Sin bonificación intradía en su tarifario',
     cau_col: '2% TNA · Pro 1,5% · Wealth 3%',
     cau_tom: '10% TNA · Pro 4% · Wealth 3%',
     apalanc: 'Operaciones en descubierto (0,45%; 0% en Pro); sin cupo publicado',
     plataformas: 'App propia y web 100% digitales; pagos con QR y compra de dólares',
-    api: 'No publicado', api_na: true,
+    api: 'No figura', api_na: true,
     usa: 'Por mandato en el exterior (0,2%); su tarifario no muestra operatoria directa en EE.UU.', usa_auto: false,
     atencion: 'Modelo 100% digital, sin asesores',
     fuente: 'cocos.capital/tarifario'
   },
   {
-    id: 'balanz', nombre: 'Balanz', tipo: 'ALyC integral N° 210 · gestora de FCI propia',
-    escala: 'Más de 1,3 millones de clientes (según su web)',
+    id: 'balanz', nombre: 'Balanz', tipo: 'ALyC integral N° 210 · gestora de FCI propia · más de 1,3 millones de clientes',
     modelo: 'Arancel por operación (topes publicados)',
     abono: 'No',
     acc_std: 0.5, acc_best: null, acc_best_txt: 'Sin tramos publicados (tope)',
@@ -433,14 +430,13 @@ const BROKERS = [
     cau_tom: 'Hasta 0,5% cada 90 días en pesos (≈2% TNA)',
     apalanc: 'Caución tomadora; sin cupo de aire publicado',
     plataformas: 'Web y app propias',
-    api: 'No publicado', api_na: true,
+    api: 'No figura', api_na: true,
     usa: 'Por mandato en el exterior (hasta 0,5%)', usa_auto: false,
     atencion: 'Asesores; trading asistido hasta 1,5%; asesoramiento hasta 0,6% anual',
     fuente: 'balanz.com/comisiones'
   },
   {
     id: 'bull', nombre: 'Bull Market', tipo: 'ALyC · Bull Market Brokers S.A.',
-    escala: 'No publicado',
     modelo: 'Arancel por tipo de cuenta según volumen del mes anterior',
     abono: 'No',
     acc_std: 0.5, acc_best: 0.1, acc_best_txt: '0,1% con más de $25M operados el mes anterior',
@@ -453,14 +449,13 @@ const BROKERS = [
     cau_tom: '0,5% mensual (≈6% TNA)',
     apalanc: 'Apalancamiento habilitable, con poder de compra en pantalla; caución tomadora y alquiler de títulos; sin cupo publicado',
     plataformas: 'Bull Market Platform (web y app); Matriz ($15.000 + IVA por mes, bonificada desde Active Trader)',
-    api: 'No publicado', api_na: true,
+    api: 'No figura', api_na: true,
     usa: 'Sí: acciones, ADRs y ETFs de EE.UU.', usa_auto: true,
     atencion: 'Chat; operador telefónico desde 1% (opciones 1,5%)',
     fuente: 'Tarifario oficial, mayo 2026'
   },
   {
     id: 'eco', nombre: 'Eco Valores', tipo: 'ALyC propio N° 109',
-    escala: 'No publicado',
     modelo: 'Arancel por operación con descuentos por volumen (Club de los Millones)',
     abono: 'No',
     acc_std: 0.33, acc_best: 0.25, acc_best_txt: '0,25% operando $30M por semana en 3 días o más (desde 0,13% con intradía)',
@@ -480,7 +475,6 @@ const BROKERS = [
   },
   {
     id: 'bcch', nombre: 'Bolsa del Chaco', tipo: 'Asociación civil · ALyC integral N° 7',
-    escala: 'No publicado',
     modelo: 'Arancel por operación (Qü autogestión o con asesoramiento)',
     abono: 'No',
     acc_std: 0.45, acc_best: null, acc_best_txt: 'Sin tramos (con asesor 1%)',
@@ -488,19 +482,18 @@ const BROKERS = [
     bonos: 'Secundario: Qü 0,45% · con asesor 1% · primario 0,35%',
     opciones: 'Qü 0,45% (ejercicio 0,4%) · con asesor 0,5%',
     futuros: '0,5%',
-    intradia: 'No publicado',
+    intradia: 'Sin bonificación intradía en su tarifario',
     cau_col: 'Pesos 4% · USD 0,2%',
     cau_tom: 'Pesos 6% · USD 5%',
-    apalanc: 'No publicado', apalanc_na: true,
+    apalanc: 'Caución tomadora (6% en pesos); sin cupo publicado',
     plataformas: 'Home Broker Qü, Home Broker, app BCCH Inversiones',
-    api: 'No publicado', api_na: true,
-    usa: 'No publicado', usa_auto: false, usa_na: true,
+    api: 'No figura', api_na: true,
+    usa: 'No figura en su tabla de aranceles', usa_auto: false, usa_na: true,
     atencion: 'Asesores; foco regional (NEA)',
     fuente: 'Tabla oficial de aranceles (bcch.org.ar)'
   },
   {
     id: 'inviu', nombre: 'inviu', tipo: 'ALyC integral N° 205 · Grupo Financiero Galicia',
-    escala: 'No publicado',
     modelo: 'Arancel por operación (topes) y fee de asesoramiento',
     abono: 'No',
     acc_std: 2.5, acc_best: null, acc_best_txt: 'Hasta 1,5% con asesor, más fee de hasta 3% anual',
@@ -508,15 +501,15 @@ const BROKERS = [
     bonos: 'Hasta 2,5% sin asesor · hasta 1,5% con asesor',
     opciones: 'Hasta 1,5%',
     futuros: 'Hasta 1,5%',
-    intradia: 'No publicado',
+    intradia: 'No figura en la fuente disponible (secundaria)',
     cau_col: 'Hasta 3% TNA',
     cau_tom: 'Hasta 6% TNA',
     apalanc: 'Préstamo para venta en corto (hasta 1,5%)',
     plataformas: 'App inviu',
-    api: 'No publicado', api_na: true,
+    api: 'No figura', api_na: true,
     usa: 'Transferencias al exterior (hasta USD 50)', usa_auto: false,
     atencion: 'Modelo asesorado (fee de hasta 3% anual sobre la tenencia)',
-    fuente: 'Tabla de marzo 2026 (hay una actualización de octubre en CNV)'
+    fuente: 'Rankia: aranceles de operación de la tabla de marzo 2026; costos de servicio de la versión anterior. Hay una tabla de octubre 2026 en CNV sin verificar'
   }
 ];
 
@@ -528,7 +521,7 @@ const PLANES = [
   { broker: 'VetaCap', me: true, plan: 'FLAT ELITE', pesos: 285000, precio: '$285.000', tag: 'Abono en pesos',
     items: ['Todo lo de ADVANCE + OptionsDesk', 'Aire: 400% de la valorizada (tope $1.000M)', '100% OFF colocadoras; 50% OFF tomadoras y ejercicio'] },
   { broker: 'IEB+', plan: 'Investor', pesos: 5000, precio: '$5.000', tag: 'Solo si operás',
-    items: ['0% en acciones, bonos, CEDEARs, ONs, letras y cauciones', 'Sin opciones ni futuros', 'Sin apalancamiento publicado'] },
+    items: ['0% en acciones, bonos, CEDEARs, ONs, letras y cauciones', 'Opciones sin arancel según su tarifario; futuros solo en banca privada', 'Sin apalancamiento publicado'] },
   { broker: 'IEB+', plan: 'Global Markets', usd: 15, precio: 'USD 15', tag: 'Solo si operás',
     items: ['Todo lo de Investor', 'Acciones, ETFs y ADRs de EE.UU. sin comisión'] },
   { broker: 'Cocos', plan: 'Cocos Pro', usd: 150, precio: 'USD 150', desde: true, tag: 'Abono en dólares',
@@ -542,14 +535,16 @@ const VEREDICTO = {
     { t: 'Cuenta web más barata del grupo', d: '0,15% en acciones, bonos, CEDEARs, ONs y opciones, contra 0,33% de Eco y 0,45% a 0,5% de IOL, Cocos, Balanz, Bull Market y Bolsa del Chaco. Solo lo bajan los tramos de alto volumen de IOL y Bull Market (0,1%) y el Club de los Millones de Eco sumando intradía (desde 0,13%).', vs: 'Todos' },
     { t: 'Único que publica su cupo de apalancamiento', d: 'Saldos y bonos de aire de 175% a 400% de la valorizada, según el plan. Bull Market permite apalancarse con el poder de compra que muestra en pantalla y Cocos opera en descubierto, pero ninguno publica un cupo equivalente.', vs: 'Bull Market, Cocos' },
     { t: 'Abono fijo con 0% en todo, en pesos', d: 'FLAT PRO bonifica acciones, bonos, CEDEARs, opciones y futuros por $85.000 + IVA. El único plan con esa cobertura es Cocos Pro, que al MEP del 19/10 cuesta desde unos $231.600 por mes.', vs: 'Cocos' },
+    { t: 'Servicios sin cargo que otros cobran', d: 'Enviar y recibir títulos, cobrar rentas y dividendos, licitar y la custodia no tienen costo en VetaCap. IOL, IEB+, Cocos, Bull Market y Eco cobran por enviar títulos (de $500 a $20.000, o hasta 1% en IEB+), y la mayoría cobra un porcentaje al acreditar rentas y dividendos (de 0,05% a 1,5% según el instrumento).', vs: 'IOL, IEB+, Cocos, Balanz, Bull Market, Eco Valores, inviu' },
     { t: 'Paquete de herramientas para el trader activo', d: 'Matriz DMA, Docta Terminal y OptionsDesk dentro del plan. Eco y Bull Market también dan Matriz, y Eco suma TradingView, pero ninguno incluye un monitor de opciones como OptionsDesk en su oferta.', vs: 'Eco Valores, Bull Market' },
     { t: 'Atención humana y comunidad', d: 'Asesor personal, grupo privado y Discord con research. Cocos e IEB+ son modelos 100% digitales; Eco es el que más se acerca, con atención por WhatsApp.', vs: 'Eco Valores, Cocos, IEB+' }
   ],
   pierde: [
     { t: 'El FLAT compite contra nuestra propia cuenta web', d: 'Con la web al 0,15%, FLAT PRO recién conviene desde unos $56,7M operados por mes. Por debajo de ese volumen, lo que justifica el FLAT es el aire, no el ahorro en aranceles.', vs: 'VetaCap (cuenta web)' },
     { t: 'Clientes de alto volumen sin plan', d: 'Entre $25M y $85M por mes, Bull Market Active Trader Plus (0,1%) es más barato que nuestra cuenta web y que FLAT PRO. IOL Black (0,1%) también, desde $50M.', vs: 'Bull Market, IOL' },
-    { t: 'Precio de entrada al 0%', d: 'IEB+ Investor da 0% en acciones, bonos, CEDEARs, ONs, letras y cauciones por $5.000 + IVA al mes, 17 veces menos que FLAT PRO, aunque sin opciones, futuros ni apalancamiento.', vs: 'IEB+' },
+    { t: 'Precio de entrada al 0%', d: 'IEB+ Investor da 0% en acciones, bonos, CEDEARs, ONs, letras y cauciones por $5.000 + IVA al mes, 17 veces menos que FLAT PRO, aunque sin futuros ni apalancamiento.', vs: 'IEB+' },
     { t: 'Mercado de EE.UU. en autogestión', d: 'IOL, IEB+ y Bull Market permiten operar acciones y ETFs de EE.UU. desde su plataforma. En VetaCap solo se puede con asesor y al 1,5%.', vs: 'IOL, IEB+, Bull Market' },
+    { t: 'Operatoria manual en lo básico', d: 'En VetaCap no hay órdenes stop, el MEP se arma a mano y las licitaciones van por el asesor. IOL y Bull Market resuelven las tres cosas desde su plataforma (Bull con stop con límite), e IEB+, Cocos, Balanz e inviu permiten comprar dólares desde la app.', vs: 'IOL, Bull Market, IEB+, Cocos, Balanz, inviu' },
     { t: 'App propia', d: 'Los grandes operan con app y web propias; VetaCap depende del Virtual Broker de AUNE para la experiencia de cartera. IOL y Eco, además, publican su API y sus condiciones de uso.', vs: 'IOL, Cocos, Balanz, Bull Market, Eco Valores' }
   ]
 };
@@ -582,6 +577,16 @@ const SOURCES = [
   ['Bull Market: cómo licitar', 'https://help.bullmarketbrokers.com/operar/como-licitar/'],
   ['Bull Market: resultado por posición', 'https://help.bullmarketbrokers.com/plataforma/consultar-resultado-posicion/'],
   ['Bull Market: apalancamiento', 'https://help.bullmarketbrokers.com/faq/que-es-el-apalancamiento/'],
+  ['Invertir en Bolsa (IEB): tarifario general y de planes IEB+', 'https://framerusercontent.com/assets/LYGQ15sAU7JNwBq3xKaIKREXUFU.pdf'],
+  ['IOL: cauciones tomadoras', 'https://www.invertironline.com/productos/cauciones-tomadoras'],
+  ['IOL: opciones (lanzamiento cubierto)', 'https://www.invertironline.com/productos/opciones'],
+  ['Cocos: ¿puedo operar cauciones? (centro de ayuda)', 'https://intercom.help/cocoscapital/es/articles/10508137-puedo-operar-cauciones'],
+  ['Bull Market: cálculo de garantías en opciones', 'https://help.bullmarketbrokers.com/faq/como-es-el-calculo-de-las-garantias/'],
+  ['Bull Market: aranceles y comisiones (centro de ayuda)', 'https://help.bullmarketbrokers.com/guia/comisiones/'],
+  ['IOL: preguntas frecuentes (depósitos y extracciones)', 'https://www.invertironline.com/preguntas-frecuentes'],
+  ['Cocos: ingreso de fondos', 'https://intercom.help/cocoscapital/es/articles/14061753-ingreso-de-fondos'],
+  ['Cocos: tratamiento impositivo de FCI (Bienes Personales)', 'https://fci.cocos.capital/Fondos/Tratamiento_Impositivo'],
+  ['Bull Market: declaración jurada de Ganancias', 'https://help.bullmarketbrokers.com/faq/necesito-hacer-mi-declaracion-jurada-de-ganancias/'],
   ['Dólar MEP de cierre del 19/10/2026 (LM Neuquén)', 'https://www.lmneuquen.com/pais/dolar-hoy-oficial-blue-cotizaciones-lunes-19-octubre-2026']
 ];
 
@@ -711,7 +716,7 @@ const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) 
     const b = el('b', '', 'Con ' + moneyM(cur) + ' por mes, ');
     take.appendChild(b);
     let t = 'la opción más conveniente de VetaCap es ' + (bestVeta.sub === 'FLAT PRO' ? 'FLAT PRO' : 'la cuenta web') + ' (' + money(bestVeta.c) + '): puesto ' + pos + ' de ' + ranked.length + ' brokers. ';
-    if (first !== bestVeta) t += 'La más barata es ' + first.nombre + ' (' + first.o + (first.nombre === 'IEB+' ? ', sin opciones, futuros ni apalancamiento' : '') + '), con ' + money(first.c) + '. ';
+    if (first !== bestVeta) t += 'La más barata es ' + first.nombre + ' (' + first.o + (first.nombre === 'IEB+' ? ', sin futuros ni apalancamiento' : '') + '), con ' + money(first.c) + '. ';
     if (firstOp && firstOp !== bestVeta && firstOp !== first) t += 'Sin contar IEB+, la más barata es ' + firstOp.nombre + ' (' + firstOp.o + '), con ' + money(firstOp.c) + '.';
     else if (firstOp === bestVeta && first !== bestVeta) t += 'Sin contar IEB+, VetaCap es la más barata.';
     take.appendChild(document.createTextNode(t));
@@ -740,13 +745,14 @@ const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) 
 /* ---------- matriz ---------- */
 (function matrix() {
   const GROUPS = [
-    ['Perfil', [['tipo', 'Tipo y grupo'], ['escala', 'Escala publicada']]],
+    ['Perfil', [['tipo', 'Tipo, grupo y escala']]],
     ['Costos', [['modelo', 'Modelo de cobro'], ['abono', 'Abono fijo'], ['acciones', 'Acciones y CEDEARs'], ['bonos', 'Bonos y ONs'], ['opciones', 'Opciones'], ['futuros', 'Futuros'], ['intradia', 'Intradía']]],
     ['Financiamiento', [['cau_col', 'Caución colocadora'], ['cau_tom', 'Caución tomadora'], ['apalanc', 'Apalancamiento']]],
     ['Plataforma y servicio', [['plataformas', 'Plataformas'], ['api', 'API y bots'], ['usa', 'Mercado de EE.UU.'], ['atencion', 'Atención y comunidad']]],
     ['Fuente', [['fuente', 'Fuente']]]
   ];
   const t = document.getElementById('matrix');
+  const mcg = el('colgroup'); mcg.appendChild(el('col')).style.width = '165px'; BROKERS.forEach(() => mcg.appendChild(el('col'))); t.appendChild(mcg);
   const thead = el('thead'); const hr = el('tr');
   hr.appendChild(el('th', 'dim', 'Dimensión'));
   BROKERS.forEach((b) => hr.appendChild(el('th', b.me ? 'me' : '', b.nombre)));
@@ -758,7 +764,7 @@ const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) 
       const tr = el('tr'); tr.appendChild(el('td', 'dim', label));
       BROKERS.forEach((b) => {
         const v = b[k];
-        const na = b[k + '_na'] || v === 'No publicado' || v === 'No';
+        const na = b[k + '_na'] || v === 'No figura' || v === 'No';
         tr.appendChild(el('td', (b.me ? 'me' : '') + (na && !b.me ? ' na' : ''), v));
       });
       tb.appendChild(tr);
@@ -770,53 +776,90 @@ const el = (tag, cls, txt) => { const e = document.createElement(tag); if (cls) 
 
 /* ---------- funcionalidades ---------- */
 const FEATS = [
+  { group: 'Operatoria' },
   { label: 'Órdenes stop', desc: 'Stop loss u órdenes condicionales', c: {
-    veta: ['conf', 'A confirmar (vía Matriz)'], iol: ['si', 'Stop loss, con términos en su centro de ayuda'], ieb: ['no', 'No figura en su FAQ'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura'],
+    veta: ['no', 'No se ofrecen'], iol: ['si', 'Stop loss, con términos en su centro de ayuda'], ieb: ['no', 'No figura'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura'],
     bull: ['parcial', 'Stop con límite'], eco: ['parcial', 'Stop limit; no stop market'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
   { label: 'Dólar MEP desde la app', desc: 'Comprar y vender MEP sin armar la operación a mano', c: {
-    veta: ['conf', 'A confirmar'], iol: ['si', '"Dólar MEP Simple" en la app'], ieb: ['si', 'Botón "Operá con Dólar MEP" en la pantalla inicial'], cocos: ['si', 'Compra y venta de dólares en la app, 24/7'], balanz: ['si', 'Compra y venta de MEP en la app'],
-    bull: ['si', 'Compra y venta de MEP en un clic'], eco: ['parcial', 'Por EcoChat, vía bonos'], bcch: ['no', 'No figura'], inviu: ['si', 'MEP en la app'] } },
+    veta: ['no', 'Se arma a mano'], iol: ['si', '"Dólar MEP Simple" en la app'], ieb: ['si', 'Botón "Operá con Dólar MEP"'], cocos: ['si', 'Botón de dólar en la app (opera vía bono), 24/7'], balanz: ['si', 'Compra y venta de MEP en la app'],
+    bull: ['si', 'MEP en un clic'], eco: ['parcial', 'Por EcoChat, vía bonos'], bcch: ['no', 'No figura'], inviu: ['si', 'MEP en la app'] } },
+  { label: 'Licitaciones desde la plataforma', desc: 'Letras, bonos y ONs en mercado primario', c: {
+    veta: ['no', 'Solo a través del asesor'], iol: ['si', 'En la app, con filtros'], ieb: ['no', 'No figura'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura'],
+    bull: ['si', 'Pestaña Licitaciones en su web'], eco: ['parcial', 'Por EcoChat'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { label: 'Caución tomadora', desc: 'Acceso del cliente a tomar caución', c: {
+    veta: ['parcial', 'Solo con asesor y plan FLAT'], iol: ['si', 'Desde la plataforma, previa solicitud; aforo hasta 70%, mínimo $200.000'], ieb: ['no', 'Los planes no la detallan (arancel general hasta 10%)'], cocos: ['parcial', 'Solo clientes Gold'], balanz: ['si', 'Publicada en su tarifario'],
+    bull: ['si', 'Publicada en su tarifario'], eco: ['parcial', 'Solo clientes asesorados'], bcch: ['si', 'Publicada en su tabla'], inviu: ['si', 'Publicada en su tabla'] } },
+  { label: 'Lanzamiento descubierto de opciones', desc: 'Vender opciones sin tener el activo', c: {
+    veta: ['parcial', 'Hasta 15% del neto de la valorizada, solo con FLAT'], iol: ['no', 'Solo documenta el lanzamiento cubierto'], ieb: ['no', 'No figura'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura'],
+    bull: ['si', 'Con garantía: prima más 1% a 5% del ejercicio'], eco: ['si', 'Primas lanzadas hasta 30% de la tenencia'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { label: 'API para clientes', desc: 'Trading algorítmico', c: {
+    veta: ['no', 'No se ofrece al público; casos aislados'], iol: ['si', 'Publicada, con habilitación previa (25.000 llamadas/mes)'], ieb: ['no', 'No figura'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura'],
+    bull: ['no', 'No figura'], eco: ['si', 'REST y FIX, con homologación de Primary'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { group: 'Cartera' },
   { label: 'Saldo que rinde solo', desc: 'Remuneración o barrido automático del efectivo libre', c: {
-    veta: ['parcial', 'FCI en dólares que sirve como garantía; sin barrido automático'], iol: ['si', 'Cuenta remunerada en dólares con interés diario'], ieb: ['parcial', 'FCI T+0 y T+1 en el plan gratuito'], cocos: ['parcial', 'FCI con dinero disponible 24/7; sin barrido automático publicado'], balanz: ['parcial', 'FCI Money Market'],
+    veta: ['parcial', 'FCI en dólares que sirve como garantía; sin barrido automático'], iol: ['si', 'Cuenta remunerada en dólares con interés diario'], ieb: ['parcial', 'FCI T+0 y T+1 en el plan gratuito'], cocos: ['parcial', 'FCI disponibles 24/7; sin barrido automático publicado'], balanz: ['parcial', 'FCI Money Market'],
     bull: ['no', 'No figura'], eco: ['no', 'No figura'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
   { label: 'Resultado de la cartera', desc: 'P&L y seguimiento de resultados', c: {
-    veta: ['si', 'Docta Terminal con P&L automático'], iol: ['no', 'No figura'], ieb: ['parcial', 'Precio de compra en "Mis operaciones"'], cocos: ['si', 'Pestaña Rendimiento: retorno de la cartera y de cada activo'], balanz: ['no', 'No figura'],
+    veta: ['si', 'Docta Terminal con P&L automático'], iol: ['no', 'No figura'], ieb: ['parcial', 'Precio de compra en "Mis operaciones"'], cocos: ['si', 'Pestaña Rendimiento: cartera y cada activo'], balanz: ['no', 'No figura'],
     bull: ['parcial', 'Ganancia o pérdida por posición contra el precio promedio'], eco: ['si', 'EcoPortfolio: tenencias, históricos y resultados'], bcch: ['no', 'No figura'], inviu: ['parcial', 'Composición de cartera, sin resultados'] } },
-  { label: 'Licitaciones desde la plataforma', desc: 'Letras, bonos y ONs en mercado primario', c: {
-    veta: ['conf', 'Sin arancel; canal a confirmar'], iol: ['si', 'Licitaciones primarias en la app, con filtros'], ieb: ['no', 'No figura'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura en la app'],
-    bull: ['si', 'Pestaña Licitaciones en su plataforma web'], eco: ['parcial', 'Por EcoChat'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { label: 'Velocidad en ingresos y retiros', desc: 'Acreditación de depósitos y salida de fondos', c: {
+    veta: ['parcial', 'Depósitos inmediatos; retiros en aproximadamente 1 hora, con demora variable'], iol: ['si', 'Depósitos inmediatos (el primero hasta 3 h); extracciones instantáneas'], ieb: ['parcial', 'Depósitos automáticos (el primero hasta 24 h); retiros después de las 22 h, al día hábil siguiente; tope de $20M por retiro'], cocos: ['parcial', 'Depósitos automáticos (hasta 48 h hábiles si hay demoras); retiros sin plazo publicado'], balanz: ['no', 'No figura'],
+    bull: ['no', 'No figura'], eco: ['parcial', 'Extracciones automáticas desde EcoPortfolio; sin plazo publicado'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { label: 'Reporte anual para Ganancias y Bienes Personales', desc: 'Información lista para la declaración jurada', c: {
+    veta: ['no', 'No se ofrece'], iol: ['no', 'No figura'], ieb: ['no', 'Solo reporte mensual de cartera'], cocos: ['parcial', 'Información de Bienes Personales para sus FCI'], balanz: ['no', 'No figura'],
+    bull: ['parcial', 'Tenencia valorizada al 31/12 para la declaración de Ganancias'], eco: ['no', 'No figura'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
+  { group: 'Costos de servicio (según tarifario)' },
+  { label: 'Enviar títulos a otro broker', desc: 'Transferencia saliente de la tenencia', c: {
+    veta: ['si', 'Sin cargo'], iol: ['cobra', 'AR$ 750 + IVA'], ieb: ['cobra', 'Hasta 1%'], cocos: ['cobra', '$10.000 + IVA'], balanz: ['si', 'Sin cargo'],
+    bull: ['cobra', '$500 + IVA por especie'], eco: ['cobra', '$20.000 + IVA'], bcch: ['no', 'No figura en su tabla'], inviu: ['no', 'No figura en su tabla'] } },
   { label: 'Recibir títulos de otro broker', desc: 'Transferencia entrante de la tenencia', c: {
-    veta: ['si', 'Sin cargo'], iol: ['si', 'Recepción sin cargo'], ieb: ['si', 'Recepción asistida por mail'], cocos: ['si', 'Recepción sin cargo'], balanz: ['si', 'Recepción sin cargo'],
-    bull: ['si', 'Recepción sin cargo'], eco: ['si', 'Asistencia para traer tenencias de otros brokers'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } },
-  { label: 'API para clientes', desc: 'Trading algorítmico', c: {
-    veta: ['parcial', 'Bots con homologación previa'], iol: ['si', 'API publicada, con habilitación previa (25.000 llamadas/mes)'], ieb: ['no', 'No figura'], cocos: ['no', 'No figura'], balanz: ['no', 'No figura'],
-    bull: ['no', 'No figura'], eco: ['si', 'API REST y FIX, con homologación de Primary'], bcch: ['no', 'No figura'], inviu: ['no', 'No figura'] } }
+    veta: ['si', 'Sin cargo'], iol: ['si', 'Sin cargo'], ieb: ['parcial', 'Por mail; su tarifario cobra hasta 1% por transferencia, sin distinguir entrante y saliente'], cocos: ['si', 'Sin cargo'], balanz: ['si', 'Sin cargo'],
+    bull: ['si', 'Sin cargo'], eco: ['si', 'Sin cargo; asistencia según su FAQ'], bcch: ['no', 'No figura en su tabla'], inviu: ['no', 'No figura en su tabla'] } },
+  { label: 'Cobro de rentas y dividendos', desc: 'Lo que cobra el broker al acreditar', c: {
+    veta: ['si', 'Sin cargo (solo gastos de Caja de Valores)'], iol: ['cobra', 'Dividendos 0,25% + IVA; rentas 0,1%'], ieb: ['si', 'Sin cargo con plan (sin plan, hasta 2%)'], cocos: ['cobra', '0,25% + IVA'], balanz: ['cobra', 'Dividendos hasta 1% + IVA; rentas hasta 0,35%'],
+    bull: ['cobra', '1% (+ IVA, salvo bonos y ONs)'], eco: ['cobra', 'Rentas 1%; dividendos 1,5% + IVA'], bcch: ['no', 'No figura en su tabla'], inviu: ['cobra', 'Hasta 1,5%'] } },
+  { label: 'Licitaciones', desc: 'Arancel por participar en mercado primario', c: {
+    veta: ['si', 'Sin cargo'], iol: ['cobra', 'Letras y ONs 0,5%; acciones y títulos públicos 1%'], ieb: ['si', 'Sin cargo con plan (sin plan, hasta 1%)'], cocos: ['cobra', 'Hasta 1%'], balanz: ['cobra', 'Hasta 0,5% (letras 0,1%)'],
+    bull: ['cobra', '0,25% (0,1% desde Active Trader, según su centro de ayuda)'], eco: ['no', 'A consultar según su tarifario'], bcch: ['cobra', 'Bonos 0,35%'], inviu: ['cobra', 'Suscripciones primarias hasta 8% anual (según Rankia)'] } },
+  { label: 'Dólares al exterior', desc: 'Transferencia saliente de USD', c: {
+    veta: ['cobra', '1% (operación USD cable)'], iol: ['no', 'Transferencias en US$ sin cargo; no detalla envíos al exterior'], ieb: ['cobra', 'USD 35 + IVA'], cocos: ['no', 'Transferencia de dólares $0; no detalla envíos al exterior (entrante USD 10)'], balanz: ['cobra', 'USD 10 + IVA'],
+    bull: ['cobra', 'USD 100'], eco: ['no', 'A consultar'], bcch: ['no', 'No figura en su tabla'], inviu: ['cobra', 'Hasta USD 50'] } },
+  { label: 'Custodia y mantenimiento', desc: 'Costo fijo por tener la cuenta', c: {
+    veta: ['si', 'Sin cargo'], iol: ['si', 'Sin cargo (se suman costos de Caja de Valores)'], ieb: ['parcial', 'Mantenimiento bonificado según su FAQ; el arancel general fija $100 por mes'], cocos: ['parcial', 'Sin cargo hasta USD 200.000; $1.000 + IVA por mes hasta USD 300.000; luego costo de Caja de Valores'], balanz: ['si', 'Sin cargo'],
+    bull: ['si', 'Sin cargo'], eco: ['si', 'Sin cargo'], bcch: ['si', '$0 en su tabla; recupera gastos de Caja de Valores'], inviu: ['si', 'Sin cargo'] } }
 ];
-const ST_TXT = { si: 'Sí', parcial: 'Parcial', no: 'No figura', conf: 'A confirmar' };
+const ST_TXT = { si: 'Sí', parcial: 'Parcial', no: 'No', cobra: 'Con cargo', conf: 'A confirmar' };
 const CUSTODIA = [
   'Cocos Wealth Management cobra hasta 0,15% mensual sobre la cartera y no cobra arancel en acciones, CEDEARs, bonos ni letras.',
   'Bull Market baja el arancel por capital invertido en acciones, CEDEARs, bonos, ONs y opciones: 0,40% con más de USD 100.000 (Wealth Management) y 0,25% con más de USD 250.000 (Wealth Management Premium).'
 ];
 const OPORTUNIDADES = [
-  'Un reporte anual listo para Ganancias y Bienes Personales, con retenciones.',
-  'Un incentivo por traer la cartera desde otra ALyC (por ejemplo, meses de FLAT sin costo según lo transferido).',
+  'Un reporte anual completo para Ganancias y Bienes Personales, con retenciones. Lo más cercano es la tenencia valorizada al 31/12 de Bull Market.',
+  'Un incentivo por traer la cartera desde otra ALyC (por ejemplo, meses de FLAT sin costo según lo transferido). Recibir y enviar títulos ya es gratis en VetaCap.',
   'Una vista en vivo de las garantías comprometidas y la distancia a un margin call. Bull Market muestra el poder de compra en pantalla, pero nadie publica esa vista.'
 ];
 (function feats() {
   const t = document.getElementById('feat');
+  const cg = el('colgroup'); cg.appendChild(el('col')).style.width = '185px';
+  BROKERS.forEach(() => cg.appendChild(el('col')));
+  t.appendChild(cg);
   const thead = el('thead'); const hr = el('tr');
   hr.appendChild(el('th', 'dim', 'Funcionalidad'));
   BROKERS.forEach((b) => hr.appendChild(el('th', b.me ? 'me' : '', b.nombre)));
   thead.appendChild(hr); t.appendChild(thead);
   const tb = el('tbody');
   FEATS.forEach((f) => {
+    if (f.group) {
+      const gr = el('tr', 'group'); const gc = el('td'); gc.colSpan = BROKERS.length + 1; gc.textContent = f.group; gr.appendChild(gc); tb.appendChild(gr);
+      return;
+    }
     const tr = el('tr');
     const d = el('td', 'dim'); d.appendChild(el('b', '', f.label)); d.appendChild(el('span', '', f.desc)); tr.appendChild(d);
     BROKERS.forEach((b) => {
       const [st, txt] = f.c[b.id];
       const td = el('td', b.me ? 'me' : '');
-      td.appendChild(el('span', 'st ' + st, ST_TXT[st]));
-      if (txt && st !== 'no' && txt !== 'A confirmar') td.appendChild(el('span', 'det', txt));
+      td.appendChild(el('span', 'st ' + st, st === 'no' && !b.me ? 'No figura' : ST_TXT[st]));
+      if (txt && txt !== 'A confirmar' && !(st === 'no' && !b.me && txt.startsWith('No figura'))) td.appendChild(el('span', 'det', txt));
       tr.appendChild(td);
     });
     tb.appendChild(tr);
